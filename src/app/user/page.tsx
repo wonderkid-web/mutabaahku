@@ -3,7 +3,7 @@
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
 
-function page() {
+function Page() {
   const session = useSession()
 
   return (
@@ -14,4 +14,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

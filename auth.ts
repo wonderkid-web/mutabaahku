@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 
 export const { signIn, signOut, auth, handlers } = NextAuth({
   providers: [
@@ -17,6 +18,7 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
         return null;
       },
     }),
+    Google,
   ],
 
   callbacks: {
