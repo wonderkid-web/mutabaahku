@@ -1,9 +1,15 @@
-import React from 'react'
+import { SectionManageMutqin } from '@/components/pages/guru/mutqin/SectionManageMutqin'
+import TahfidzHeader from '@/components/pages/guru/TahfidzHeader'
 
-function Mutskin() {
+
+function MutqinPage() {
+
+
   return (
-    <div>Mutskin</div>
+    <TahfidzHeader>
+        <SectionManageMutqin />
+    </TahfidzHeader>
   )
 }
 
-export default Mutskin
+export default MutqinPage

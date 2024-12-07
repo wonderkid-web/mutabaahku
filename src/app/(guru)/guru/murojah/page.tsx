@@ -1,9 +1,12 @@
-import React from 'react'
+import StudentSection from "@/components/pages/guru/murojah/StudentSection";
+import TahfidzHeader from "@/components/pages/guru/TahfidzHeader";
 
-function Murojah() {
+function HafalanPage() {
   return (
-    <div>Murojah</div>
-  )
+    <TahfidzHeader>
+      <StudentSection />
+    </TahfidzHeader>
+  );
 }
 
-export default Murojah
+export default HafalanPage;

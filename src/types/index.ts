@@ -6,7 +6,7 @@ export type Student = {
   teacher_id: number | null;
   total_ayat: number | null;
   total_juz: number | null;
-  status: string;
+  status: number;
   created_at: Date;
 };
 
@@ -31,4 +31,10 @@ export type Mutabaah = {
   };
   created_at: Date;
   notes?: string; // Optional
+};
+
+export type Juz = {
+  id: number;
+  name: string;
+  status?: "Selesai" | "Belum Selesai";
 };

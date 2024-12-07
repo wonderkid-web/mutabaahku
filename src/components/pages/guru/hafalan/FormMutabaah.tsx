@@ -87,7 +87,7 @@ export function FormMutabaah({
 }: {
   student_id: Mutabaah["student_id"];
 }) {
-  const getMutabaah = trpc.getMutabaah.useQuery(
+  const getHafalan = trpc.getHafalan.useQuery(
     { student_id },
     {
       enabled: !!student_id,
@@ -96,10 +96,10 @@ export function FormMutabaah({
       refetchOnWindowFocus: false,
     }
   );
-  const { mutate: addMutabaah } = trpc.addMutabaah.useMutation<any>({
-    onMutate: () => toast.info("Menambahkan Mutabaah"),
+  const { mutate: addHafalan } = trpc.addHafalan.useMutation<any>({
+    onMutate: () => toast.info("Menambahkan Hafalan"),
     onSuccess: () => {
-      getMutabaah.refetch();
+      getHafalan.refetch();
       toast.success("Berhasil Menambahkan data baru");
     },
     onError: (e) => {
@@ -124,7 +124,7 @@ export function FormMutabaah({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    addMutabaah({ ...values, student_id });
+    addHafalan({ ...values, student_id });
   }
 
   return (
@@ -209,13 +209,14 @@ export function FormMutabaah({
             control={form.control}
             name="page_number"
             render={({ field }) => (
-              <FormItem>
+              <FormItem
+              >
                 <FormLabel>Halaman</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
                     {...field}
-                    className="border border-customSecondary"
+                    className="border border-customSecondary w-full"
                     placeholder="Masukkan nomor halaman"
                   />
                 </FormControl>
