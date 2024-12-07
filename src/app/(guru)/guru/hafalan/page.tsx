@@ -1,47 +1,50 @@
-import { FormMutabaah } from "@/components/pages/guru/FormMutabaah";
+import StudentSection from "@/components/pages/guru/StudentSection";
+
 import { TableMurid } from "@/components/pages/guru/TableMurid";
-import { Book, Users, Beaker, Music, Calculator, Palette } from "lucide-react";
+import { caller } from "@/server/serverClient";
 
-// Define the type for our class data
-type ClassInfo = {
-  name: string;
-  students: number;
-  icon: keyof typeof iconMap;
-};
+// const data = [
+//   {
+//     id: 1,
+//     teacher_id: 1,
+//     class_id: 1,
+//     name: "Ahmad",
+//     total_ayat: 100,
+//     total_juz: 3,
+//     status: "Active",
+//     created_at: new Date("2024-12-06T13:41:17.207Z"),
+//   },
+//   {
+//     id: 2,
+//     teacher_id: 2,
+//     class_id: 2,
+//     name: "Fatimah",
+//     total_ayat: 50,
+//     total_juz: 1,
+//     status: "Active",
+//     created_at: new Date("2024-12-06T13:41:17.207Z"),
+//   },
+//   {
+//     id: 3,
+//     teacher_id: 1,
+//     class_id: 1,
+//     name: "Zaid",
+//     total_ayat: 0,
+//     total_juz: 0,
+//     status: "Inactive",
+//     created_at: new Date("2024-12-06T13:41:17.207Z"),
+//   },
+// ]
 
-// Map string keys to icon components
-const iconMap = {
-  Book,
-  Users,
-  Beaker,
-  Music,
-  Calculator,
-  Palette,
-};
-
-// Sample data
-const classes: ClassInfo[] = [
-  { name: "Nahl 1A", students: 30, icon: "Calculator" },
-  { name: "Maryam 2C", students: 25, icon: "Book" },
-  { name: "Baqarah 4E", students: 28, icon: "Beaker" },
-  { name: "Nahl 1A", students: 30, icon: "Calculator" },
-  { name: "Maryam 2C", students: 25, icon: "Book" },
-  { name: "Baqarah 4E", students: 28, icon: "Beaker" },
-  { name: "Nahl 1A", students: 30, icon: "Calculator" },
-  { name: "Maryam 2C", students: 25, icon: "Book" },
-  // { name: "Music", students: 20, icon: "Music" },
-  // { name: "Art", students: 22, icon: "Palette" },
-  // { name: "Social Studies", students: 27, icon: "Users" },
-];
-
-export default function ClassList() {
+export default async function ClassList() {
+  const students = await caller.getStudents();
   return (
     <section className="max-h-full overflow-auto flex flex-col">
       <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-6 text-customPrimary">
-          List Kelas Masuk
+        <h1 className="text-3xl font-bold text-customPrimary">
+          Kelas Baqarah 3A {"(Hafalan)"}
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
           {classes.map((classInfo, index) => {
             const IconComponent = iconMap[classInfo.icon];
             return (
@@ -62,21 +65,18 @@ export default function ClassList() {
               </div>
             );
           })}
-        </div>
-      </div>
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-6 text-customPrimary">
-          Table Murid Kelas
-        </h1>
-        <TableMurid />
+        </div> */}
       </div>
 
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-6 text-customPrimary">
-          Tambah {"Mutaba'ah"} Murid
+      <div className="container mx-auto p-4 flex-1">
+        <h1 className="text-2xl font-bold text-customSecondary">
+          Table Murid Kelas
         </h1>
-          <FormMutabaah />
+        {/* <TableMurid data={data} /> */}
+        <TableMurid data={students} />
       </div>
+
+      <StudentSection />
     </section>
   );
 }

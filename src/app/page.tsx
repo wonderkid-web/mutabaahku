@@ -13,7 +13,7 @@ export default async function Home() {
 
       <Link 
       className="mt-8 ml-4 inline-block py-2 rounded-md bg-customPrimary text-white px-8 font-bold"
-        href={'/guru'}
+        href={'/guru/hafalan'}
       >Dashboard Guru</Link>
     </div>
   );

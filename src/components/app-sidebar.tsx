@@ -64,8 +64,8 @@ const data = {
           url: "/guru/murojah",
         },
         {
-          title: "Mutskin",
-          url: "/guru/mutskin",
+          title: "Mutqin",
+          url: "/guru/mutqin",
         },
       ],
     },

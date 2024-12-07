@@ -39,4 +39,5 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
       return session;
     },
   },
+  trustHost: true
 });

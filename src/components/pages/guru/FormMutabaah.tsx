@@ -33,18 +33,39 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { Mutabaah } from "@/types";
+import { toast } from "sonner";
+import { trpc } from "@/server/client";
 
 const formSchema = z.object({
-  tanggal: z.date({
+  created_at: z.date({
     required_error: "Tanggal harus diisi.",
   }),
-  namaSurah: z.string({
+  surah: z.string({
     required_error: "Nama surah harus dipilih.",
   }),
-  rentangAyat: z
+  page_number: z
     .string()
-    .regex(/^\d+-\d+$/, "Rentang ayat harus dalam format 'awal-akhir'."),
-  catatan: z.string().min(1, "Catatan harus diisi."),
+    .transform((val) => parseInt(val, 10)) // Mengubah page_number menjadi number
+    .refine((val) => !isNaN(val), {
+      message: "Halaman harus berupa angka valid.",
+    }),
+  ayah: z.object({
+    startFrom: z
+      .string()
+      .transform((val) => parseInt(val, 10)) // Mengubah startFrom menjadi number
+      .refine((val) => !isNaN(val), {
+        message: "Start From harus berupa angka valid.",
+      }),
+    endFrom: z
+      .string()
+      .transform((val) => parseInt(val, 10)) // Mengubah endFrom menjadi number
+      .refine((val) => !isNaN(val), {
+        message: "End From harus berupa angka valid.",
+      }),
+  }),
+  notes: z.string().min(1, "Catatan harus diisi."),
+  student_id: z.number(),
 });
 
 const daftarSurah = [
@@ -61,28 +82,58 @@ const daftarSurah = [
   // ... tambahkan surah lainnya di sini
 ];
 
-export function FormMutabaah() {
+export function FormMutabaah({
+  student_id,
+}: {
+  student_id: Mutabaah["student_id"];
+}) {
+  const getMutabaah = trpc.getMutabaah.useQuery(
+    { student_id },
+    {
+      enabled: !!student_id,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+  const { mutate: addMutabaah } = trpc.addMutabaah.useMutation<any>({
+    onMutate: () => toast.info("Menambahkan Mutabaah"),
+    onSuccess: () => {
+      getMutabaah.refetch();
+      toast.success("Berhasil Menambahkan data baru");
+    },
+    onError: (e) => {
+      console.error(e)
+      toast.error("Gagal Menambahkan data")
+    },
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tanggal: new Date(),
-      namaSurah: "",
-      rentangAyat: "",
-      catatan: "",
+      created_at: new Date(),
+      surah: "Al-Fatihah",
+      page_number: 0,
+      ayah: {
+        startFrom: 1,
+        endFrom: 2,
+      },
+      notes: "",
+      student_id: 0,
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // Di sini Anda biasanya akan mengirim data ke backend
+    addMutabaah({ ...values, student_id });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {/* Tanggal */}
         <FormField
           control={form.control}
-          name="tanggal"
+          name="created_at"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Tanggal</FormLabel>
@@ -125,20 +176,18 @@ export function FormMutabaah() {
             </FormItem>
           )}
         />
+
+        {/* Surah */}
         <FormField
           control={form.control}
-          name="namaSurah"
+          name="surah"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nama Surah</FormLabel>
-
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-              >
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="border border-customSecondary">
-                    <SelectValue placeholder="Pilih surah" className="border border-customSecondary"/>
+                    <SelectValue placeholder="Pilih surah" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -153,29 +202,83 @@ export function FormMutabaah() {
             </FormItem>
           )}
         />
+
+        {/* Halaman */}
+        <div className="flex gap-2 items-center flex-col justify-center justify-items-center lg:flex-row">
+          <FormField
+            control={form.control}
+            name="page_number"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Halaman</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    {...field}
+                    className="border border-customSecondary"
+                    placeholder="Masukkan nomor halaman"
+                  />
+                </FormControl>
+                <FormDescription>
+                  Masukan Nomor Halaman {"(contoh: 17)"}
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Rentang Ayat */}
+
+          <FormField
+            control={form.control}
+            name="ayah.startFrom"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Dimulai dari ayat</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="contoh: 1-5"
+                    {...field}
+                    className="border border-customSecondary"
+                  />
+                </FormControl>
+                <FormDescription>
+                  Masukkan rentang ayat dalam format {"'awal-akhir'"} (contoh:
+                  1-5)
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Rentang Ayat */}
+          <FormField
+            control={form.control}
+            name="ayah.endFrom"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Berakhir di ayat</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="contoh: 1-5"
+                    {...field}
+                    className="border border-customSecondary"
+                  />
+                </FormControl>
+                <FormDescription>
+                  Masukkan rentang ayat dalam format {"'awal-akhir'"} (contoh:
+                  1-5)
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Catatan */}
         <FormField
           control={form.control}
-          name="rentangAyat"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Rentang Ayat</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="contoh: 1-5"
-                  {...field}
-                  className="border border-customSecondary"
-                />
-              </FormControl>
-              <FormDescription>
-                Masukkan rentang ayat dalam format {"'awal-akhir'"} (contoh: 1-5)
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="catatan"
+          name="notes"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Catatan</FormLabel>
@@ -190,6 +293,8 @@ export function FormMutabaah() {
             </FormItem>
           )}
         />
+
+        {/* Submit Button */}
         <Button
           type="submit"
           className="bg-customPrimary hover:bg-customSecondary text-white"

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { ArrowDownUpIcon, ChevronDownIcon, EllipsisIcon } from "lucide-react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -17,16 +16,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
   Table,
   TableBody,
   TableCell,
@@ -34,78 +23,81 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { setStudentData } from "@/helper/zustand";
-import { Student } from "@/types";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDownIcon } from "lucide-react";
+
+import { Mutabaah, Student } from "@/types";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 
 // Definisikan kolom-kolom tabel
-export const columns: ColumnDef<Student>[] = [
+export const columns: ColumnDef<Mutabaah>[] = [
   {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        className="text-white mx-0"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Nama
-        <ArrowDownUpIcon className="text-white h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "gender",
-    header: () => <p className="text-white">Jenis Kelamin</p>,
+    accessorKey: "id",
+    header: () => <p className="text-white">No.</p>,
     cell: ({ row }) => (
-      <div className="capitalize">
-        {row.getValue("gender") === "Male" ? "Perempuan" : "Laki-laki"}
-      </div>
+      <div className="min-h-8 flex items-center">{row.index+1}</div>
     ),
   },
   {
-    id: "actions",
-    enableHiding: false,
+    accessorKey: "created_at",
+    header: () => <p className="text-white">Tanggal</p>,
     cell: ({ row }) => {
-      const student = row.original;
-
+      const date = format(row.getValue("created_at"), "dd");
+      return <div className="min-h-8 flex items-center">{date}</div>;
+    },
+  },
+  {
+    accessorKey: "surah",
+    header: () => <p className="text-white">Surah</p>,
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("surah")}</div>
+    ),
+  },
+  {
+    accessorKey: "page_number",
+    header: () => <p className="text-white">Halaman</p>,
+    cell: ({ row }) => (
+      <div className="lg:ml-6">{row.getValue("page_number")}</div>
+    ),
+  },
+  {
+    accessorKey: "ayah",
+    header: () => <p className="text-white">Ayat</p>,
+    cell: ({ row }) => {
+      const ayah = row.getValue("ayah") as Mutabaah["ayah"];
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Buka menu</span>
-              <EllipsisIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(student.id.toString())
-              }
-            >
-              Salin ID murid
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() =>
-                setStudentData.getState().setStudentData({
-                  student_id: student.id,
-                  name: student.name,
-                })
-              }
-            >
-              Lihat detail
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div>
+          {" "}
+          {ayah?.startFrom} - {ayah?.endFrom}
+        </div>
       );
     },
   },
+  {
+    accessorKey: "notes",
+    header: () => <p className="text-white">Keterangan</p>,
+    cell: ({ row }) => <div>{row.getValue("notes")}</div>,
+  },
 ];
 
-export function TableMurid({ data }: { data: Student[] }) {
-  // const students = trpc.getStudents.useQuery();
+function TableMutabaah({
+  name,
+  data,
+}: {
+  name: Student["name"];
+  data: Mutabaah[] | [];
+}) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -118,6 +110,7 @@ export function TableMurid({ data }: { data: Student[] }) {
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -129,22 +122,18 @@ export function TableMurid({ data }: { data: Student[] }) {
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination,
     },
-});
-  console.log("render pas ngetik");
+  });
+
+
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <Input
-          placeholder="Cari berdasarkan nama..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm shadow-none border-customPrimary"
-        />
-
+        <h1 className="text-2xl font-bold  text-customSecondary">
+          Table Mutabaah {name} | {format(new Date(), "MMMM", { locale: id })}
+        </h1>
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="border-customSecondary">
             <Button variant="outline" className="ml-auto">
@@ -152,23 +141,22 @@ export function TableMurid({ data }: { data: Student[] }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="border-customSecondary" align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
+            {[5, 15, 31].map((column) => {
+              return (
+                <DropdownMenuCheckboxItem
+                  key={column}
+                  className="capitalize"
+                  onClick={() =>
+                    setPagination((prev) => ({
+                      pageSize: Number(column),
+                      pageIndex: prev.pageIndex,
+                    }))
+                  }
+                >
+                  {column}
+                </DropdownMenuCheckboxItem>
+              );
+            })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -178,11 +166,11 @@ export function TableMurid({ data }: { data: Student[] }) {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
+                className="border-customSecondary bg-customSecondary text-white!"
                 style={{
                   backgroundColor:
                     "rgb(3 91 115 / var(--tw-border-opacity, 1))",
                 }}
-                className="border-customSecondary bg-customSecondary text-white!"
                 key={headerGroup.id}
               >
                 {headerGroup.headers.map((header) => {
@@ -259,3 +247,5 @@ export function TableMurid({ data }: { data: Student[] }) {
     </div>
   );
 }
+
+export default React.memo(TableMutabaah);
