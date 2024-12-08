@@ -3,7 +3,7 @@
 import { FormMutabaah } from "./FormMutabaah";
 import { setStudentData } from "@/helper/zustand";
 import { trpc } from "@/server/client";
-import TableMutabaah from "./TableMutabaah";
+import TableMutabaah from "./table/TableMurojahMutabaah";
 import Loader from "@/components/Loader";
 
 function StudentSection() {
@@ -21,11 +21,11 @@ function StudentSection() {
     return (
       <>
         {isLoading ? (
-            <Loader className="mx-auto scale-125" />
+          <Loader className="mx-auto scale-125" />
         ) : (
           <div className="container mx-auto p-4">
             {/* @ts-ignore */}
-            <TableMutabaah name={name} data={murojah} />
+            <TableMutabaah data={murojah} />
           </div>
         )}
 

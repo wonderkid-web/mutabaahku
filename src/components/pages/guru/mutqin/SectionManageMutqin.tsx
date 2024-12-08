@@ -59,7 +59,8 @@ function TableManageMutqin({ student_id }: { student_id: number }) {
     <table className="min-w-full bg-white rounded-md border border-customSecondary">
       <thead className="bg-customSecondary text-white">
         <tr>
-          <th className="py-2 px-4 border-b border-r border-white text-left">
+          <th className="py-2 px-4 border-b border-r border-white text-left hidden lg:block
+          ">
             No
           </th>
           <th className="py-2 px-4 border-b border-r border-white text-left">
@@ -78,9 +79,9 @@ function TableManageMutqin({ student_id }: { student_id: number }) {
         {juzData.map((juz) => (
           <tr
             key={juz.id}
-            className="hover:bg-gray-50 border-b  border-customSecondary"
+            className="hover:bg-gray-50 border-b  border-customSecondary text-xs lg:text-sm "
           >
-            <td className="py-2 px-4 border-r border-customSecondary">
+            <td className="py-2 px-4 border-r border-customSecondary hidden lg:block">
               {juz.id}
             </td>
             <td className="py-2 px-4 border-r border-customSecondary">
@@ -91,7 +92,7 @@ function TableManageMutqin({ student_id }: { student_id: number }) {
             </td>
             <td className="py-2 px-4 border-r border-customSecondary text-center">
               <span
-                className={`px-2 py-1 rounded-full text-xs font-semibold
+                className={`px-2 py-1 rounded-full text-xs font-semibold text-center md:text-left
                   ${
                     Number(juz.id) <= data.status + 1
                       ? Number(juz.id) == data.status + 1

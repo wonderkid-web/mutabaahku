@@ -1,4 +1,4 @@
-import { TableMurid } from "@/components/pages/guru/TableMurid";
+import { TableMurid } from "@/components/pages/guru/murid/TableMurid";
 import { caller } from "@/server/serverClient";
 import { ReactNode } from "react";
 

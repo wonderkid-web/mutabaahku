@@ -80,6 +80,20 @@ export const appRouter = router({
         },
       });
     }),
+  updateSchoolOrigin: procedure
+    .input(z.object({ email: z.string(), schoolOrigin: z.string() }))
+    .mutation(
+      async ({ input: { schoolOrigin, email } }) =>
+        await prisma.user.update({
+          data: {
+            // @ts-ignore
+            schoolOrigin,
+          },
+          where: {
+            email,
+          },
+        })
+    ),
 });
 
 export type AppRouter = typeof appRouter;

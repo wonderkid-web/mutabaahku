@@ -1,43 +1,13 @@
 import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import prisma from "@/helper/prisma";
+import authConfig from "./config/auth/auth.config";
 
 export const { signIn, signOut, auth, handlers } = NextAuth({
-  providers: [
-    Credentials({
-      credentials: {
-        username: { label: "Username" },
-        password: { label: "Password", type: "password" },
-      },
-      // @ts-ignore
-      async authorize() {
-        const user = {
-          user: "Mr. Koto",
-        };
-        if (user) return user;
-        return null;
-      },
-    }),
-    Google,
-  ],
-
-  callbacks: {
-    jwt: async ({ user, token }) => {
-      if (user) {
-        token.user = user;
-
-        return token;
-      }
-      return token;
-    },
-
-    session: async ({ session, token }) => {
-      if (token) {
-        // @ts-ignore
-        session.user = token.user;
-      }
-      return session;
-    },
+  adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "jwt",
   },
-  trustHost: true
+  ...authConfig,
+  
 });
