@@ -2,7 +2,7 @@ import { caller } from "@/server/serverClient";
 import { Book, Trash } from "lucide-react";
 import ClassDelete from "./ClassDelete";
 
-async function ClassList() {
+ async function ClassList() {
   const classes = await caller.getClass();
 
   return (

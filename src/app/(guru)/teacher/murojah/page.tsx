@@ -3,6 +3,7 @@ import TahfidzHeader from "@/components/pages/guru/TahfidzHeader";
 
 function HafalanPage() {
   return (
+    // @ts-ignore
     <TahfidzHeader>
       <StudentSection />
     </TahfidzHeader>

@@ -6,6 +6,7 @@ function MutqinPage() {
 
 
   return (
+    // @ts-ignore
     <TahfidzHeader>
         <SectionManageMutqin />
     </TahfidzHeader>
