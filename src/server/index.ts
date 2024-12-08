@@ -94,6 +94,21 @@ export const appRouter = router({
           },
         })
     ),
+  getClass: procedure.query(async () => await prisma.renamedclass.findMany()),
+  createClass: procedure.input(z.object({ name: z.string() })).mutation(
+    async ({ input: { name } }) =>
+      await prisma.renamedclass.create({
+        data: {
+          name,
+        },
+      })
+  ),
+  deleteClass: procedure
+    .input(z.object({ id: z.number() }))
+    .mutation(
+      async ({ input: { id } }) =>
+        await prisma.renamedclass.delete({ where: { id } })
+    ),
 });
 
 export type AppRouter = typeof appRouter;

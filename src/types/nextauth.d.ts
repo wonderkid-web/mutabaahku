@@ -22,7 +22,7 @@ interface IUser extends DefaultUser {
   /**
    * Role of user
    */
-  role?: Role;
+  role?: "operator" | "teacher" | "parent";
   /**
    * Field to check whether a user has a subscription
    */

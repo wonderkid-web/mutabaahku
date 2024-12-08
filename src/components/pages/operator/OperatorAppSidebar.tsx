@@ -1,6 +1,4 @@
 "use client"
-
-import * as React from "react"
 import {
   AudioWaveform,
   BookOpen,
@@ -9,7 +7,9 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  SquareChartGantt
 } from "lucide-react"
+
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
@@ -35,7 +35,7 @@ const data = {
     {
       name: "Mutabaahku",
       logo: GalleryVerticalEnd,
-      plan: "Dashboard Guru",
+      plan: "Dashboard Operator",
     },
     {
       name: "Acme Corp.",
@@ -50,44 +50,25 @@ const data = {
   ],
   navMain: [
     {
-      title: "Tahfidz",
-      url: "#",
-      icon: SquareTerminal,
+      title: "Menejemen",
+      url: "/",
+      icon: SquareChartGantt,
       isActive: true,
       items: [
         {
-          title: "Hafalan",
-          url: "/guru/hafalan",
+          title: "Guru",
+          url: "/operator/teacher",
         },
         {
-          title: "Muroj'ah",
-          url: "/guru/murojah",
+          title: "Kelas",
+          url: "/operator/class",
         },
         {
-          title: "Mutqin",
-          url: "/guru/mutqin",
+          title: "Role",
+          url: "/operator/role",
         },
       ],
     },
-    // {
-    //   title: "Models",
-    //   url: "#",
-    //   icon: Bot,
-    //   items: [
-    //     {
-    //       title: "Genesis",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Explorer",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Quantum",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
     {
       title: "Documentation",
       url: "#",
@@ -136,26 +117,16 @@ const data = {
     },
   ],
   projects: [
-    // {
-    //   name: "Design Engineering",
-    //   url: "#",
-    //   icon: Frame,
-    // },
     {
       name: "Sales & Marketing",
       url: "#",
       icon: PieChart,
     },
-    // {
-    //   name: "Travel",
-    //   url: "#",
-    //   icon: Map,
-    // },
   ],
 }
 
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function OperatorAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const session = useSession()
 
   return (
