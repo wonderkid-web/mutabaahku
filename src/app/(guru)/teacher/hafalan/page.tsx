@@ -1,11 +1,11 @@
-
 import StudentSection from "@/components/pages/guru/hafalan/StudentSection";
 import TahfidzHeader from "@/components/pages/guru/TahfidzHeader";
+import { caller } from "@/server/serverClient";
 
-function HafalanPage() {
+async function HafalanPage() {
+  const students = await caller.getStudents();
   return (
-    // @ts-ignore
-    <TahfidzHeader>
+    <TahfidzHeader students={students}>
       <StudentSection />
     </TahfidzHeader>
   );

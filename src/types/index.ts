@@ -38,3 +38,16 @@ export type Juz = {
   name: string;
   status?: "Selesai" | "Belum Selesai";
 };
+
+
+export type User = {
+  id: string; // Kolom 'id' adalah primary key bertipe text
+  name: string | null; // Kolom 'name' bersifat nullable
+  email: string; // Kolom 'email' tidak nullable dan harus unik
+  emailVerified: Date | null; // Tipe 'timestamp without time zone' biasanya direpresentasikan sebagai string ISO
+  image: string | null; // Kolom 'image' nullable
+  createdAt: Date; // Tipe 'timestamp without time zone' direpresentasikan sebagai Date ISO
+  updatedAt: Date; // Sama dengan 'createdAt'
+  role: string | null; // Nullable, tipe text
+  schoolOrigin: string | null; // Nullable, tipe text
+};

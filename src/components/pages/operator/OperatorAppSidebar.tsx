@@ -64,6 +64,10 @@ const data = {
           url: "/operator/class",
         },
         {
+          title: "Murid",
+          url: "/operator/student",
+        },
+        {
           title: "Role",
           url: "/operator/role",
         },

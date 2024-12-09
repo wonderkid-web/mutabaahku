@@ -14,10 +14,10 @@ import {
 
 
 import { Mutabaah } from "@/types";
-import { TableFooter } from "../../TableFooter";
+import { TableFooter } from "../../../../table/TableFooter";
 import { TableColumnsMurojah as columns } from "./TableColumnsMurojah";
 import { TableHeaderMurojah } from "./TableHeaderMurojah";
-import TableBody from "../../table/TableBody";
+import TableBody from "../../../../table/TableBody";
 
 
 

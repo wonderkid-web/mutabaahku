@@ -1,13 +1,14 @@
 import { TableMurid } from "@/components/pages/guru/murid/TableMurid";
-import { caller } from "@/server/serverClient";
+
+import { Student } from "@/types";
 import { ReactNode } from "react";
 
-export default async function TahfidzHeader({
-  children,
+export default function TahfidzHeader({
+  children, students
 }: {
   children: ReactNode;
+  students: Student[]
 }) {
-  const students = await caller.getStudents();
   return (
     <section className="max-h-full overflow-auto flex flex-col">
       <div className="container mx-auto p-4">

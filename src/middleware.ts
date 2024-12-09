@@ -7,12 +7,21 @@ export default auth(async (req) => {
   const operatorPath = "/operator";
   const parentPath = "/parent";
   const teacherPath = "/teacher";
+  const newUserPath = "/auth/signin";
 
   if (!req.auth) {
     if (req.nextUrl.pathname !== signinPath) {
       const newUrl = new URL(signinPath, req.nextUrl.origin);
       return Response.redirect(newUrl);
     }
+  }
+
+  const isRole = req.auth?.user?.role;
+  const isSchoolOrigin = req.auth?.user?.schoolOrigin;
+
+  if (!isRole && isSchoolOrigin) {
+    const newUrl = new URL(newUserPath, req.nextUrl.origin);
+    return Response.redirect(newUrl);
   }
 
   const isTeacher = req.auth?.user?.role == "teacher";

@@ -11,15 +11,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { Student } from "@/types";
+import { User } from "@/types";
 import TableBody from "../../../table/TableBody";
-import { TableColumnsMurid as columns } from "./TableColumnsMurid";
 
 import { useState } from "react";
 import { TableFooter } from "../../../table/TableFooter";
 import TableSearch from "../../../table/TableSearch";
+import { TableColumnsTeacher as columns } from "./TableColumnsTeacher";
 
-export function TableMurid({ data }: { data: Student[] }) {
+export function TableTeacher({ data }: { data: User[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -48,11 +48,11 @@ export function TableMurid({ data }: { data: Student[] }) {
 
   return (
     <div className="w-full">
-      <TableSearch<Student> table={table} />
+      <TableSearch<User> table={table} />
 
       <TableBody table={table} columns={columns} key={0} />
 
-      <TableFooter<Student> table={table} />
+      <TableFooter<User> table={table} />
     </div>
   );
 }

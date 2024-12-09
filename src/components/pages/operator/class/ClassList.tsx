@@ -1,10 +1,15 @@
-import { caller } from "@/server/serverClient";
-import { Book, Trash } from "lucide-react";
+import { Book } from "lucide-react";
 import ClassDelete from "./ClassDelete";
 
- async function ClassList() {
-  const classes = await caller.getClass();
-
+function ClassList({
+  classes,
+}: {
+  classes: {
+    created_at: Date | null;
+    name: string;
+    id: number;
+  }[];
+}) {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6 text-customPrimary">

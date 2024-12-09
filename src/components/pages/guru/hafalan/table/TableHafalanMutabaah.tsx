@@ -13,11 +13,12 @@ import {
 
 import { Mutabaah, Student } from "@/types";
 
-import { TableFooter } from "../../TableFooter";
+
 import { TableColumnsHafalan as columns } from "./TableColumnsHafalan";
 import TableHeaderHafalan from "./TableHeaderHafalan";
 import { memo, useState } from "react";
-import TableBody from "../../table/TableBody";
+import TableBody from "../../../../table/TableBody";
+import { TableFooter } from "../../../../table/TableFooter";
 
 function TableMutabaah({
   data,

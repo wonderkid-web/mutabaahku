@@ -2,19 +2,19 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Student } from "@/types";
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuCheckboxItem,
-} from "@radix-ui/react-dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { Table } from "@tanstack/react-table";
 import { ChevronDownIcon } from "lucide-react";
 
-const SearchStudent = ({ table }: { table: Table<Student> }) => {
+export default function TableSearch<T>({ table }: { table: Table<T> })  {
   return (
-    <div className="flex items-center py-4">
+    <div className="flex items-center gap-2 py-4">
       <Input
         placeholder="Cari berdasarkan nama..."
         value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -52,4 +52,3 @@ const SearchStudent = ({ table }: { table: Table<Student> }) => {
   );
 };
 
-export default SearchStudent;

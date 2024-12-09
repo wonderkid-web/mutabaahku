@@ -1,16 +1,15 @@
-import { SectionManageMutqin } from '@/components/pages/guru/mutqin/SectionManageMutqin'
-import TahfidzHeader from '@/components/pages/guru/TahfidzHeader'
+import { SectionManageMutqin } from "@/components/pages/guru/mutqin/SectionManageMutqin";
+import TahfidzHeader from "@/components/pages/guru/TahfidzHeader";
+import { caller } from "@/server/serverClient";
 
-
-function MutqinPage() {
-
+async function MutqinPage() {
+  const students = await caller.getStudents();
 
   return (
-    // @ts-ignore
-    <TahfidzHeader>
-        <SectionManageMutqin />
+    <TahfidzHeader students={students}>
+      <SectionManageMutqin />
     </TahfidzHeader>
-  )
+  );
 }
 
-export default MutqinPage
+export default MutqinPage;

@@ -13,11 +13,7 @@
 
 // nextauth.d.ts
 import { DefaultSession, DefaultUser } from "next-auth";
-export enum Role {
-  operator = "operator",
-  teacher = "teacher",
-  parent = "parent"
-}
+
 interface IUser extends DefaultUser {
   /**
    * Role of user
