@@ -12,21 +12,20 @@ import { formatedDate } from "@/helper";
 import { setStudentData } from "@/helper/zustand";
 import { trpc } from "@/server/client";
 import { Student } from "@/types";
+import {
+  useQueryClient,
+} from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowDownUpIcon, Delete, EllipsisIcon } from "lucide-react";
+import { ArrowDownUpIcon, EllipsisIcon } from "lucide-react";
 import { toast } from "sonner";
 
-function ComponentDeleteStudent({
-  id,
-}: {
-  id: number;
-  classId: number;
-}) {
-  const { refetch } = trpc.getStudentsByClassId.useQuery({classId:0});
+function ComponentDeleteStudent({ id }: { id: number; classId: number }) {
+  const queryClient = useQueryClient();
   const deleteStudent = trpc.deleteStudent.useMutation({
     onSuccess: () => {
-      refetch();
       toast.success("Berhasil Menghapus Murid");
+      // @ts-ignore
+      queryClient.invalidateQueries(["getStudentsByClassId"]);
     },
     onMutate: () => {
       toast.info("Proses Menghapus");
@@ -35,8 +34,9 @@ function ComponentDeleteStudent({
       toast.warning("Gagal Menghapus Murid!");
     },
   });
+
   return (
-    <DropdownMenuItem onClick={() => deleteStudent.mutate({ id })}>
+    <DropdownMenuItem onClick={() => deleteStudent.mutate({ id }, {})}>
       Hapus Siswa
     </DropdownMenuItem>
   );

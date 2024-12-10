@@ -20,7 +20,10 @@ import { toast } from "sonner";
 import { setterGlobalClass } from "@/helper/zustand";
 
 function ClassListTeacher({ classId }: { classId: User["classId"] }) {
-  const { data: teachers, refetch } = trpc.getUsers.useQuery();
+  const { data: teachers, refetch } = trpc.getUsers.useQuery(undefined, {
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  });
   const updateClassToTeacher = trpc.updateClassToTeacher.useMutation({
     onSuccess: () => {
       toast.success("Berhasil Menentukan Kelas");

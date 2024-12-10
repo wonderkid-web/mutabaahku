@@ -37,6 +37,9 @@ function ClassStudentSection() {
     },
     {
       enabled: !!classId,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false
     }
   );
   const addStudent = trpc.addStudent.useMutation({

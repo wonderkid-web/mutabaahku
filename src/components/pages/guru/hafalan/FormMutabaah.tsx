@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
@@ -37,6 +36,7 @@ import { Mutabaah } from "@/types";
 import { toast } from "sonner";
 import { trpc } from "@/server/client";
 import { daftarSurah } from "@/static";
+import { useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
   created_at: z.date({
@@ -96,6 +96,8 @@ export function FormMutabaah({
     },
   });
 
+  const queryClient = useQueryClient();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -113,7 +115,7 @@ export function FormMutabaah({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     addHafalan({ ...values, student_id });
-    form.reset()
+    form.reset();
   }
 
   return (
