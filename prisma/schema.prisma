@@ -22,17 +22,17 @@ model Renamedclass {
 
 model student {
   id           Int          @id @default(autoincrement())
-  teacher_id   Int
   class_id     Int
   name         String       @db.VarChar(255)
   total_ayat   Int?         @default(0)
   total_juz    Int?         @default(0)
   status       Int          @default(0) @db.SmallInt
   created_at   DateTime     @default(now()) @db.Timestamp(6)
+  teacher_id   String?
   hafalan      hafalan[]
   murojah      murojah[]
   Renamedclass Renamedclass @relation(fields: [class_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  teacher      teacher      @relation(fields: [teacher_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  teacher      User?        @relation(fields: [teacher_id], references: [id], onUpdate: NoAction)
 }
 
 model teacher {
@@ -40,7 +40,6 @@ model teacher {
   name         String        @db.VarChar(255)
   class_id     Int?
   created_at   DateTime?     @default(now()) @db.Timestamp(6)
-  student      student[]
   Renamedclass Renamedclass? @relation(fields: [class_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
@@ -82,6 +81,7 @@ model User {
   Authenticator Authenticator[]
   sessions      Session[]
   class         Renamedclass?   @relation(fields: [classId], references: [id])
+  student       student[]
 }
 
 model Account {

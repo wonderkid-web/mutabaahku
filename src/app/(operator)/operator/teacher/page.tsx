@@ -1,6 +1,8 @@
 import { TableTeacher } from "@/components/pages/operator/teacher/TableTeacher";
 import { caller } from "@/server/serverClient";
 
+export const revalidate = 0
+
 async function TeacherPage() {
   const users = await caller.getUsers();
   return (

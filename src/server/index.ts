@@ -20,6 +20,40 @@ export const appRouter = router({
         },
       })
     ),
+  getStudentByClassId: procedure
+    .input(z.object({ classId: z.number() }))
+    .query(async ({ input: { classId } }) =>
+      prisma.student.findMany({
+        where: {
+          class_id: classId,
+        },
+      })
+    ),
+
+  addStudent: procedure
+    .input(z.object({ name: z.string(), classId: z.number() }))
+    .mutation(async ({ input: { classId, name } }) => {
+      const teacher_id = await prisma.user.findFirstOrThrow({
+        where: { classId: classId },
+        select: { id: true },
+      });
+
+      await prisma.student.create({
+        data: {
+          name,
+          class_id: classId,
+          teacher_id: teacher_id?.id,
+        },
+      });
+    }),
+
+  deleteStudent: procedure
+    .input(z.object({ id: z.number() }))
+    .mutation(
+      async ({ input: { id } }) =>
+        await prisma.student.delete({ where: { id } })
+    ),
+
   getHafalan: procedure
     .input(z.object({ student_id: z.number() }))
     .query(async ({ input: { student_id } }) => {
@@ -110,6 +144,12 @@ export const appRouter = router({
         await prisma.renamedclass.delete({ where: { id } })
     ),
   getUsers: procedure.query(async () => await prisma.user.findMany()),
+  getUser: procedure
+    .input(z.object({ id: z.string() }))
+    .query(
+      async ({ input: { id } }) =>
+        await prisma.user.findUnique({ where: { id } })
+    ),
   deleteUser: procedure
     .input(z.object({ id: z.string() }))
     .mutation(
@@ -126,6 +166,12 @@ export const appRouter = router({
         },
       })
   ),
+  updateClassToTeacher: procedure
+    .input(z.object({ id: z.string(), classId: z.number() }))
+    .mutation(
+      async ({ input: { classId, id } }) =>
+        await prisma.user.update({ where: { id }, data: { classId } })
+    ),
 });
 
 export type AppRouter = typeof appRouter;

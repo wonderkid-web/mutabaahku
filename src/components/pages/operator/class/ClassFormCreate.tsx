@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { trpc } from "@/server/client";
 import { useRouter } from "next/navigation";
 
+
 const formCreateClassSchema = z.object({
   name: z.string({
     required_error: "Nama Kelas Wajib di isi.",
@@ -51,16 +52,18 @@ export function ClassFormCreate() {
     form.reset()
   }
 
+
+
   return (
-    <div className="container mx-auto p-4 flex-1">
+    <div className="container mx-auto p-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex gap-2">
           {/* Catatan */}
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full">
                 <FormLabel>Nama Kelas</FormLabel>
                 <FormControl>
                   <Input
@@ -77,7 +80,7 @@ export function ClassFormCreate() {
           {/* Submit Button */}
           <Button
             type="submit"
-            className="bg-customPrimary hover:bg-customSecondary text-white"
+            className="bg-customSecondary hover:bg-customSecondary text-white"
           >
             Kirim
           </Button>

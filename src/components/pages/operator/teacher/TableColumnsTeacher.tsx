@@ -136,6 +136,15 @@ export const TableColumnsTeacher: ColumnDef<User>[] = [
     ),
   },
   {
+    accessorKey: "classId",
+    header: () => <p className="text-white">Asal Sekolah</p>,
+    cell: ({ row }) => (
+      <div className="capitalize">
+        {row.getValue("classId") || "Tidak ada"}
+      </div>
+    ),
+  },
+  {
     accessorKey: "createdAt",
     header: () => <p className="text-white">Dibuat Pada</p>,
     cell: ({ row }) => formatedDate(row.getValue("createdAt")), // Format tanggal

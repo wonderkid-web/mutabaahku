@@ -1,10 +1,11 @@
 "use client";
 import { trpc } from "@/server/client";
+import { User } from "@/types";
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-function ClassDelete({ id }: { id: number }) {
+function ClassDelete({ classId }: { classId: User["classId"] }) {
   const router = useRouter();
   const deleteClass = trpc.deleteClass.useMutation({
     onSuccess: () => {
@@ -18,14 +19,13 @@ function ClassDelete({ id }: { id: number }) {
       toast.warning("Gagal Menghapus Kelas.");
     },
   });
+
   return (
-    <div className="flex gap-1 items-center">
-      <Trash
-        color="red"
-        size={15}
-        className="hover:cursor-pointer"
-        onClick={() => deleteClass.mutate({ id })}
-      />
+    <div
+      className="px-3 hover:cursor-pointer hover:scale-105 transition  flex gap-1 items-center justify-center text-red-500 rounded-sm"
+      onClick={() => deleteClass.mutate({ id: classId! })}
+    >
+      <Trash size={15} />
     </div>
   );
 }

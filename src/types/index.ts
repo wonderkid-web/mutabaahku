@@ -3,11 +3,11 @@ export type Student = {
   id: number;
   name: string;
   class_id: number | null;
-  teacher_id: number | null;
+  teacher_id: string | null;
   total_ayat: number | null;
   total_juz: number | null;
   status: number;
-  created_at: Date;
+  created_at: Date | string;
 };
 
 type ParamsStudentData = {
@@ -39,15 +39,28 @@ export type Juz = {
   status?: "Selesai" | "Belum Selesai";
 };
 
-
 export type User = {
   id: string; // Kolom 'id' adalah primary key bertipe text
   name: string | null; // Kolom 'name' bersifat nullable
   email: string; // Kolom 'email' tidak nullable dan harus unik
-  emailVerified: Date | null; // Tipe 'timestamp without time zone' biasanya direpresentasikan sebagai string ISO
+  emailVerified: string | Date | null; // Tipe 'timestamp without time zone' biasanya direpresentasikan sebagai string ISO
   image: string | null; // Kolom 'image' nullable
-  createdAt: Date; // Tipe 'timestamp without time zone' direpresentasikan sebagai Date ISO
-  updatedAt: Date; // Sama dengan 'createdAt'
+  createdAt: Date | string; // Tipe 'timestamp without time zone' direpresentasikan sebagai Date ISO
+  updatedAt: Date | string; // Sama dengan 'createdAt'
   role: string | null; // Nullable, tipe text
   schoolOrigin: string | null; // Nullable, tipe text
+  classId: number | null;
+};
+
+export type Classes = {
+  created_at: Date | null;
+  name: string;
+  id: number;
+};
+
+export type SetterGlobaClass = {
+  classId: Classes["id"] | null;
+  teachers: { classId: User["classId"]; id: User["id"] }[] | null;
+  setGlobalClass: (classId: Classes["id"]) => void;
+  setGlobalTeacher: (teacherData:  { classId: User["classId"]; id: User["id"] }[]) => void;
 };

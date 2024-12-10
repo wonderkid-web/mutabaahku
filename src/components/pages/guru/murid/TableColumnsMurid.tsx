@@ -7,11 +7,44 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { formatedDate } from "@/helper";
 
 import { setStudentData } from "@/helper/zustand";
+import { trpc } from "@/server/client";
 import { Student } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowDownUpIcon, EllipsisIcon } from "lucide-react";
+import { ArrowDownUpIcon, Delete, EllipsisIcon } from "lucide-react";
+import { toast } from "sonner";
+
+function ComponentDeleteStudent({
+  id,
+  classId,
+}: {
+  id: number;
+  classId: number;
+}) {
+  const { refetch } = trpc.getStudentByClassId.useQuery(
+    { classId },
+    { enabled: !!classId }
+  );
+  const deleteStudent = trpc.deleteStudent.useMutation({
+    onSuccess: () => {
+      refetch();
+      toast.success("Berhasil Menghapus Murid");
+    },
+    onMutate: () => {
+      toast.info("Proses Menghapus");
+    },
+    onError: () => {
+      toast.warning("Gagal Menghapus Murid!");
+    },
+  });
+  return (
+    <DropdownMenuItem onClick={() => deleteStudent.mutate({ id })}>
+      Hapus Siswa
+    </DropdownMenuItem>
+  );
+}
 
 // Definisikan kolom-kolom tabel
 export const TableColumnsMurid: ColumnDef<Student>[] = [
@@ -30,11 +63,11 @@ export const TableColumnsMurid: ColumnDef<Student>[] = [
     cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
-    accessorKey: "gender",
-    header: () => <p className="text-white">Jenis Kelamin</p>,
+    accessorKey: "created_at",
+    header: () => <p className="text-white">Tanggal Input</p>,
     cell: ({ row }) => (
       <div className="capitalize">
-        {row.getValue("gender") === "Male" ? "Perempuan" : "Laki-laki"}
+        {formatedDate(row.getValue("created_at"))}
       </div>
     ),
   },
@@ -43,7 +76,6 @@ export const TableColumnsMurid: ColumnDef<Student>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const student = row.original;
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -54,13 +86,12 @@ export const TableColumnsMurid: ColumnDef<Student>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(student.id.toString())
-              }
-            >
-              Salin ID murid
-            </DropdownMenuItem>
+            {student.id && student.class_id && (
+              <ComponentDeleteStudent
+                id={student.id}
+                classId={student.class_id}
+              />
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() =>
