@@ -79,10 +79,11 @@ export function ClassFormCreate() {
 
           {/* Submit Button */}
           <Button
+            disabled={createClass.isPending}
             type="submit"
             className="bg-customSecondary hover:bg-customSecondary text-white"
           >
-            Kirim
+            {!createClass.isPending ? "Buat" : "Membuat Kelas..."}
           </Button>
         </form>
       </Form>

@@ -84,7 +84,7 @@ export function FormMutabaah({
     }
   );
 
-  const { mutate: addHafalan } = trpc.addHafalan.useMutation<any>({
+  const { mutate: addHafalan, isPending } = trpc.addHafalan.useMutation<any>({
     onMutate: () => toast.info("Menambahkan Hafalan"),
     onSuccess: () => {
       getHafalan.refetch();
@@ -261,7 +261,7 @@ export function FormMutabaah({
             )}
           />
         </div>
-        
+
         {/* Catatan */}
         <FormField
           control={form.control}
@@ -282,11 +282,13 @@ export function FormMutabaah({
         />
 
         {/* Submit Button */}
+        {/* Submit Button */}
         <Button
           type="submit"
+          disabled={isPending}
           className="bg-customPrimary hover:bg-customSecondary text-white w-full"
         >
-          Kirim
+          {!isPending ? "Kirim" : "Sedang Mengirim..."}
         </Button>
       </form>
     </Form>

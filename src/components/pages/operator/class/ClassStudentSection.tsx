@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { add } from "date-fns";
 
 const formStudentSchema = z.object({
   name: z.string({
@@ -92,10 +93,11 @@ function ClassStudentSection() {
 
             {/* Submit Button */}
             <Button
+              disabled={addStudent.isPending}
               type="submit"
               className="bg-customSecondary self-end hover:bg-customSecondary text-white"
             >
-              Buat
+              {!addStudent.isPending ? "Tambah" : "Menambah Murid..."}
             </Button>
           </form>
         </Form>

@@ -96,7 +96,7 @@ export function FormMutabaah({
       refetchOnWindowFocus: false,
     }
   );
-  const { mutate: addMurojah } = trpc.addMurojah.useMutation<any>({
+  const { mutate: addMurojah, isPending } = trpc.addMurojah.useMutation<any>({
     onMutate: () => toast.info("Menambahkan Muroj'ah"),
     onSuccess: () => {
       getMurojah.refetch();
@@ -113,7 +113,7 @@ export function FormMutabaah({
     defaultValues: {
       created_at: new Date(),
       surah: "Al-Fatihah",
-      page_number: 0,
+      page_number: 1,
       ayah: {
         startFrom: 1,
         endFrom: 2,
@@ -296,9 +296,10 @@ export function FormMutabaah({
         {/* Submit Button */}
         <Button
           type="submit"
+          disabled={isPending}
           className="bg-customPrimary hover:bg-customSecondary text-white w-full"
         >
-          Kirim
+          {!isPending ? "Kirim" : "Sedang Mengirim..."}
         </Button>
       </form>
     </Form>

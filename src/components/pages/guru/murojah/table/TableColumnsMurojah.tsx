@@ -28,6 +28,7 @@ function DeleteMutabaah({ id }: { id: number }) {
 
   return (
     <button
+      disabled={deleteMutabaah.isPending}
       className="flex justify-center items-center bg-red-400 px-3 py-1 rounded-sm text-white"
       onClick={() => deleteMutabaah.mutate({ id })}
     >
@@ -84,6 +85,11 @@ export const TableColumnsMurojah: ColumnDef<Mutabaah>[] = [
     {
       accessorKey: "notes",
       header: () => <p className="text-white">Keterangan</p>,
+      cell: ({ row }) => <p>{row.getValue("notes")}</p>
+    },
+    {
+      id: "action",
+      header: () => <p className="text-white"></p>,
       cell: ({ row }) => <DeleteMutabaah id={row.original.id} />
     },
   ];
