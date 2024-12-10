@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { getSession, signOut } from "next-auth/react";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const formSchoolOriginSchema = z.object({
   schoolOrigin: z.string({
@@ -50,6 +51,7 @@ function SchoolOriginForm() {
   });
 
   const form = useForm<z.infer<typeof formSchoolOriginSchema>>({
+    resolver: zodResolver(formSchoolOriginSchema),
     defaultValues: {
       schoolOrigin: "palestineIslamicSchool",
     },
@@ -80,7 +82,7 @@ function SchoolOriginForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Pilih Sesuai dengan Instansi Akhi/Ukhti</FormLabel>
-              <Select>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="list nama sekolah" />

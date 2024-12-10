@@ -113,6 +113,7 @@ export function FormMutabaah({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     addHafalan({ ...values, student_id });
+    form.reset()
   }
 
   return (

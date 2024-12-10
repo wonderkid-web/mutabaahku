@@ -60,7 +60,7 @@ function ClassStudentSection() {
         name,
       });
 
-    return toast.info("Tidak Menemukan Class ID");
+    form.reset();
   };
 
   if (classId)
