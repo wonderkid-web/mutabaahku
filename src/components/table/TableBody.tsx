@@ -20,7 +20,7 @@ function TableBody<T>({
   columns: ColumnDef<T>[];
 }) {
   return (
-    <div className="rounded-md border border-customSecondary text-customPrimary max-w-96 lg:max-w-screen-2xl overflow-auto">
+    <div className="rounded-md border border-customSecondary text-customPrimary max-w-[91vw] lg:max-w-screen-2xl overflow-auto">
       <Table className="min-w-96">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
