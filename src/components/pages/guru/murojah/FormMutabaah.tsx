@@ -214,6 +214,7 @@ export function FormMutabaah({
                 <FormControl>
                   <Input
                     type="number"
+                    min={1}
                     {...field}
                     className="border border-customSecondary w-full"
                     placeholder="Masukkan nomor halaman"
@@ -237,14 +238,14 @@ export function FormMutabaah({
                 <FormLabel>Dimulai dari ayat</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="contoh: 1-5"
+                    type="number"
+                    min={1}
+                    placeholder="contoh: 1"
                     {...field}
                     className="border border-customSecondary"
                   />
                 </FormControl>
-                <FormDescription>
-                  Masukkan rentang (contoh:1)
-                </FormDescription>
+                <FormDescription>Masukkan rentang (contoh:1)</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -259,14 +260,14 @@ export function FormMutabaah({
                 <FormLabel>Berakhir di ayat</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="contoh: 1-5"
+                    type="number"
+                    min={2}
+                    placeholder="contoh: 2"
                     {...field}
                     className="border border-customSecondary"
                   />
                 </FormControl>
-                <FormDescription>
-                  Masukkan rentang (contoh:5)
-                </FormDescription>
+                <FormDescription>Masukkan rentang (contoh:5)</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -295,7 +296,7 @@ export function FormMutabaah({
         {/* Submit Button */}
         <Button
           type="submit"
-          className="bg-customPrimary hover:bg-customSecondary text-white w-full lg:w-fit"
+          className="bg-customPrimary hover:bg-customSecondary text-white w-full"
         >
           Kirim
         </Button>

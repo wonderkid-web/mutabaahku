@@ -1,6 +1,41 @@
 import { Mutabaah } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
+import { setStudentData } from "@/helper/zustand";
+import { trpc } from "@/server/client";
+import { toast } from "sonner";
+import { Trash } from "lucide-react";
+
+
+function DeleteMutabaah({ id }: { id: number }) {
+  const { student_id } = setStudentData();
+  const { refetch } = trpc.getMurojah.useQuery(
+    { student_id: student_id! },
+    { enabled: !!student_id }
+  );
+  const deleteMutabaah = trpc.deleteMurojah.useMutation({
+    onSuccess: () => {
+      refetch();
+      toast.success("Berhasil Menghapus Mutabaah");
+    },
+    onMutate: () => {
+      toast.info("Proses Menghapus");
+    },
+    onError: () => {
+      toast.warning("Gagal Menghapus Mutabaah!");
+    },
+  });
+
+  return (
+    <button
+      className="flex justify-center items-center bg-red-400 px-3 py-1 rounded-sm text-white"
+      onClick={() => deleteMutabaah.mutate({ id })}
+    >
+
+      <Trash color="white" size={14} />
+    </button>
+  );
+}
 
 // Definisikan kolom-kolom tabel
 export const TableColumnsMurojah: ColumnDef<Mutabaah>[] = [
@@ -49,7 +84,7 @@ export const TableColumnsMurojah: ColumnDef<Mutabaah>[] = [
     {
       accessorKey: "notes",
       header: () => <p className="text-white">Keterangan</p>,
-      cell: ({ row }) => <div>{row.getValue("notes")}</div>,
+      cell: ({ row }) => <DeleteMutabaah id={row.original.id} />
     },
   ];
   
