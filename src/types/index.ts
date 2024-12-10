@@ -22,6 +22,7 @@ export type SetStudentData = {
 };
 
 export type Mutabaah = {
+  id: number;
   student_id: number;
   surah: string;
   page_number: number;

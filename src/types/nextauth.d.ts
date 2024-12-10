@@ -23,6 +23,7 @@ interface IUser extends DefaultUser {
    * Field to check whether a user has a subscription
    */
   schoolOrigin?: string;
+  classId?: number;
 }
 
 declare module "next-auth" {

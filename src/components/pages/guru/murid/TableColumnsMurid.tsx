@@ -18,15 +18,11 @@ import { toast } from "sonner";
 
 function ComponentDeleteStudent({
   id,
-  classId,
 }: {
   id: number;
   classId: number;
 }) {
-  const { refetch } = trpc.getStudentByClassId.useQuery(
-    { classId },
-    { enabled: !!classId }
-  );
+  const { refetch } = trpc.getStudentsByClassId.useQuery({classId:0});
   const deleteStudent = trpc.deleteStudent.useMutation({
     onSuccess: () => {
       refetch();

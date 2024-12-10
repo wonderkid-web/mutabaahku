@@ -204,12 +204,12 @@ export function FormMutabaah({
         />
 
         {/* Halaman */}
-        <div className="flex gap-2 items-center flex-col justify-center justify-items-center lg:flex-row">
+        <div className="flex gap-2 ">
           <FormField
             control={form.control}
             name="page_number"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex-1">
                 <FormLabel>Halaman</FormLabel>
                 <FormControl>
                   <Input
@@ -220,7 +220,7 @@ export function FormMutabaah({
                   />
                 </FormControl>
                 <FormDescription>
-                  Masukan Nomor Halaman {"(contoh: 17)"}
+                  Masukan No. Halaman {"(contoh: 17)"}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -233,7 +233,7 @@ export function FormMutabaah({
             control={form.control}
             name="ayah.startFrom"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex-1">
                 <FormLabel>Dimulai dari ayat</FormLabel>
                 <FormControl>
                   <Input
@@ -243,8 +243,7 @@ export function FormMutabaah({
                   />
                 </FormControl>
                 <FormDescription>
-                  Masukkan rentang ayat dalam format {"'awal-akhir'"} (contoh:
-                  1-5)
+                  Masukkan rentang (contoh:1)
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -256,7 +255,7 @@ export function FormMutabaah({
             control={form.control}
             name="ayah.endFrom"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex-1">
                 <FormLabel>Berakhir di ayat</FormLabel>
                 <FormControl>
                   <Input
@@ -266,8 +265,7 @@ export function FormMutabaah({
                   />
                 </FormControl>
                 <FormDescription>
-                  Masukkan rentang ayat dalam format {"'awal-akhir'"} (contoh:
-                  1-5)
+                  Masukkan rentang (contoh:5)
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -297,7 +295,7 @@ export function FormMutabaah({
         {/* Submit Button */}
         <Button
           type="submit"
-          className="bg-customPrimary hover:bg-customSecondary text-white"
+          className="bg-customPrimary hover:bg-customSecondary text-white w-full lg:w-fit"
         >
           Kirim
         </Button>

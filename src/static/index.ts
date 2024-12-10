@@ -33,6 +33,21 @@ export const initialJuzData: Juz[] = [
   { id: 30, name: "Al-Mulk 1 - Al-Mursalat 50" },
 ];
 
+export const daftarSurah = [
+  "Al-Fatihah",
+  "Al-Baqarah",
+  "Ali 'Imran",
+  "An-Nisa",
+  "Al-Ma'idah",
+  "Al-An'am",
+  "Al-A'raf",
+  "Al-Anfal",
+  "At-Taubah",
+  "Yunus",
+  // ... tambahkan surah lainnya di sini
+];
+
+
 const phoneNumber = "083191319297";
 const message = encodeURIComponent(
   "Assallamu'alaikum, saya tidak menemukan nama sekolah tempat saya bekerja pada list pendaftaran"

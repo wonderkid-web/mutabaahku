@@ -2,6 +2,7 @@ import { z } from "zod";
 import { procedure, router } from "./trpc";
 import prisma from "@/helper/prisma";
 import { formSchema } from "@/helper/schema";
+import { auth } from "../../auth";
 
 export const appRouter = router({
   getStudents: procedure.query(async () => {
@@ -20,15 +21,28 @@ export const appRouter = router({
         },
       })
     ),
-  getStudentByClassId: procedure
-    .input(z.object({ classId: z.number() }))
-    .query(async ({ input: { classId } }) =>
-      prisma.student.findMany({
-        where: {
-          class_id: classId,
-        },
-      })
-    ),
+  getStudentsByClassId: procedure
+    .input(z.object({ classId: z.number().optional() }))
+    .query(async ({ input: { classId } }) => {
+      if (classId) {
+        return prisma.student.findMany({
+          where: {
+            class_id: classId,
+          },
+        });
+      } else {
+        const session = await auth();
+
+        if (session?.user?.classId) {
+          const class_id = session.user.classId;
+          return prisma.student.findMany({
+            where: {
+              class_id,
+            },
+          });
+        }
+      }
+    }),
 
   addStudent: procedure
     .input(z.object({ name: z.string(), classId: z.number() }))
@@ -78,6 +92,12 @@ export const appRouter = router({
         data: { ...input, page_number: Number(input.page_number) },
       })
   ),
+  deleteHafalan: procedure
+    .input(z.object({ id: z.number() }))
+    .mutation(
+      async ({ input: { id } }) =>
+        await prisma.hafalan.delete({ where: { id } })
+    ),
   getMurojah: procedure
     .input(z.object({ student_id: z.number() }))
     .query(async ({ input: { student_id } }) => {
@@ -102,6 +122,12 @@ export const appRouter = router({
         data: { ...input, page_number: Number(input.page_number) },
       })
   ),
+  deleteMurojah: procedure
+    .input(z.object({ id: z.number() }))
+    .mutation(
+      async ({ input: { id } }) =>
+        await prisma.murojah.delete({ where: { id } })
+    ),
   updateMutqinLevel: procedure
     .input(z.object({ student_id: z.number(), status: z.number() }))
     .mutation(async ({ input: { status, student_id } }) => {

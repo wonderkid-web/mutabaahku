@@ -2,11 +2,13 @@ import { SectionManageMutqin } from "@/components/pages/guru/mutqin/SectionManag
 import TahfidzHeader from "@/components/pages/guru/TahfidzHeader";
 import { caller } from "@/server/serverClient";
 
+export const revalidate = 0;
+
 async function MutqinPage() {
-  const students = await caller.getStudents();
+  const students = await caller.getStudentsByClassId({ classId: 0 });
 
   return (
-    <TahfidzHeader students={students}>
+    <TahfidzHeader students={students || []} type="Mutqin">
       <SectionManageMutqin />
     </TahfidzHeader>
   );

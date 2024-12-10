@@ -30,7 +30,7 @@ function ClassStudentSection() {
     data: students,
     isLoading,
     refetch,
-  } = trpc.getStudentByClassId.useQuery(
+  } = trpc.getStudentsByClassId.useQuery(
     {
       classId: Number(classId),
     },
@@ -65,11 +65,7 @@ function ClassStudentSection() {
   if (classId)
     return (
       <div className="flex flex-col gap-2 container">
-        <ClassTableStudent
-          isLoading={isLoading}
-          students={students!}
-          classId={classId}
-        />
+        <ClassTableStudent isLoading={isLoading} students={students!} />
 
         <Form {...form}>
           <form
