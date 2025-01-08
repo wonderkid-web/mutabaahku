@@ -1,6 +1,7 @@
 "use client";
 
-import Loader from "@/components/Loader";
+import LoadingBarSkeleton from "@/components/skeleton/LoadingBarSkeleton";
+import Loader from "@/components/skeleton/LoadingBarSkeleton";
 import { setStudentData } from "@/helper/zustand";
 import { trpc } from "@/server/client";
 import { initialJuzData } from "@/static";
@@ -52,7 +53,7 @@ function TableManageMutqin({ student_id }: { student_id: number }) {
     });
   };
 
-  if (isLoading) return <Loader className="scale-150 mx-auto" />;
+  if (isLoading) return <LoadingBarSkeleton className="scale-150 mx-auto" />;
 
   if (!data) return <h1>Terdapat Kesalahan</h1>;
   return (

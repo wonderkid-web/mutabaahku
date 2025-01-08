@@ -4,7 +4,8 @@ import { FormMutabaah } from "./FormMutabaah";
 import { setStudentData } from "@/helper/zustand";
 import { trpc } from "@/server/client";
 import TableMutabaah from "./table/TableMurojahMutabaah";
-import Loader from "@/components/Loader";
+import Loader from "@/components/skeleton/LoadingBarSkeleton";
+import LoadingBarSkeleton from "@/components/skeleton/LoadingBarSkeleton";
 
 function StudentSection() {
   const { name, student_id } = setStudentData();
@@ -21,7 +22,7 @@ function StudentSection() {
     return (
       <>
         {isLoading ? (
-          <Loader className="mx-auto scale-125" />
+          <LoadingBarSkeleton className="mx-auto scale-125" />
         ) : (
           <div className="container mx-auto p-4">
             {/* @ts-ignore */}

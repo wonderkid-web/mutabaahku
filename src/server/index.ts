@@ -6,7 +6,11 @@ import { auth } from "../../auth";
 
 export const appRouter = router({
   getStudents: procedure.query(async () => {
-    return await prisma.student.findMany();
+    return await prisma.student.findMany({
+      include: {
+        Renamedclass: true,
+      },
+    });
   }),
   getStudent: procedure
     .input(z.object({ student_id: z.number() }))
@@ -181,6 +185,31 @@ export const appRouter = router({
     .mutation(
       async ({ input: { id } }) => await prisma.user.delete({ where: { id } })
     ),
+
+  getTeachers: procedure.query(
+    async () =>
+      await prisma.user.findMany({
+        where: {
+          role: {
+            equals: "teacher",
+          },
+        },
+      })
+  ),
+  getTeachersWithNoClassId: procedure.query(
+    async () =>
+      await prisma.user.findMany({
+        where: {
+          role: {
+            equals: "teacher",
+          },
+          classId: {
+            equals: null,
+          },
+        },
+      })
+  ),
+
   updateRoleToTeacher: procedure.input(z.object({ id: z.string() })).mutation(
     async ({ input: { id } }) =>
       await prisma.user.update({

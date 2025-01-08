@@ -45,25 +45,12 @@ const formSchema = z.object({
   surah: z.string({
     required_error: "Nama surah harus dipilih.",
   }),
-  page_number: z
-    .string()
-    .transform((val) => parseInt(val, 10)) // Mengubah page_number menjadi number
-    .refine((val) => !isNaN(val), {
-      message: "Halaman harus berupa angka valid.",
-    }),
+  page_number: z.string({
+    required_error: "Halaman Wajib Di isi!"
+  }).or(z.number()),
   ayah: z.object({
-    startFrom: z
-      .string()
-      .transform((val) => parseInt(val, 10)) // Mengubah startFrom menjadi number
-      .refine((val) => !isNaN(val), {
-        message: "Start From harus berupa angka valid.",
-      }),
-    endFrom: z
-      .string()
-      .transform((val) => parseInt(val, 10)) // Mengubah endFrom menjadi number
-      .refine((val) => !isNaN(val), {
-        message: "End From harus berupa angka valid.",
-      }),
+    startFrom: z.string().or(z.number()).refine(val=> val !== "", {message: "Gaboleh kosong, wajib di isi"}),
+    endFrom:  z.string().or(z.number()).refine(val=> val !== "", {message: "Gaboleh kosong, wajib di isi"}),
   }),
   notes: z.string().min(1, "Catatan harus diisi."),
   student_id: z.number(),
@@ -103,10 +90,10 @@ export function FormMutabaah({
     defaultValues: {
       created_at: new Date(),
       surah: "Al-Fatihah",
-      page_number: 0,
+      page_number: "0",
       ayah: {
-        startFrom: 1,
-        endFrom: 2,
+        startFrom: "1",
+        endFrom: "2",
       },
       notes: "",
       student_id: 0,

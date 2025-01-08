@@ -14,10 +14,10 @@ import Image from "next/image";
 
 import logo from "@/../public/2.png";
 import { trpc } from "@/server/client";
-import Loader from "@/components/Loader";
 import { User } from "@/types";
 import { toast } from "sonner";
 import { setterGlobalClass } from "@/helper/zustand";
+import LoadingBarSkeleton from "@/components/skeleton/LoadingBarSkeleton";
 
 function ClassListTeacher({ classId }: { classId: User["classId"] }) {
   const { data: teachers, refetch } = trpc.getUsers.useQuery(undefined, {
@@ -105,7 +105,7 @@ function ClassListTeacher({ classId }: { classId: User["classId"] }) {
             <div className="flex size-6 items-center justify-center rounded-sm border">
               <UserIcon className="size-4 shrink-0" />
             </div>
-            <Loader />
+            <LoadingBarSkeleton />
             <DropdownMenuShortcut>-</DropdownMenuShortcut>
           </DropdownMenuItem>
         )}

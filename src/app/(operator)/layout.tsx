@@ -25,11 +25,6 @@ const tajawal = Tajawal({
   subsets: ["arabic", "latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Mutaba'ahku",
-  description: "Mudahkan Hafalanmu dengan Mutaba'ahku",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{

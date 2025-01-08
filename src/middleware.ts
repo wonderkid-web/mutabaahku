@@ -25,7 +25,7 @@ export default auth(async (req) => {
   }
 
   const isTeacher = req.auth?.user?.role == "teacher";
-  const teacherRoutes = [teacherPath].some((route) =>
+  const teacherRoutes = [teacherPath, '/windows11', '/ios', 'android'].some((route) =>
     req.nextUrl.pathname.startsWith(route)
   );
 
@@ -35,7 +35,7 @@ export default auth(async (req) => {
   }
 
   const isParent = req.auth?.user?.role == "parent";
-  const parentRoutes = [parentPath].some((route) =>
+  const parentRoutes = [parentPath, '/windows11', '/ios', 'android'].some((route) =>
     req.nextUrl.pathname.startsWith(route)
   );
 
@@ -45,7 +45,7 @@ export default auth(async (req) => {
   }
 
   const isOperator = req.auth?.user?.role == "operator";
-  const operatorRoutes = [operatorPath].some((route) =>
+  const operatorRoutes = [operatorPath, '/windows11', '/ios', 'android'].some((route) =>
     req.nextUrl.pathname.startsWith(route)
   );
 
@@ -66,5 +66,5 @@ export default auth(async (req) => {
 // export const { auth: middleware } = NextAuth(authConfig);
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|auth/signin).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|auth/signin|public/*|manifest).*)"],
 };

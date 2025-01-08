@@ -22,10 +22,12 @@ import { getSession, signOut } from "next-auth/react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+const allowedSchool = ["palestineIslamicSchool", "kotoIslamicSchool"]
+
 const formSchoolOriginSchema = z.object({
   schoolOrigin: z.string({
-    message: "Asal Sekolah wajib di isi.",
-  }),
+    required_error: "Asal Sekolah wajib di isi.",
+  }).refine(val=> allowedSchool.includes(val), {message: "Asal Sekolah belum terdaftar."}),
 });
 
 function SchoolOriginForm() {
