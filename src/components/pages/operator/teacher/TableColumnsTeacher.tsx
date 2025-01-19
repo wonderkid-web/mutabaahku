@@ -24,6 +24,7 @@ const DropdownMenuUser: React.FC<UserActionProps> = ({ user }) => {
   const router = useRouter();
   const deleteUser = trpc.deleteUser.useMutation();
   const updateRoleToTeacher = trpc.updateRoleToTeacher.useMutation();
+  const demoteRoleToTeacher = trpc.demoteRoleToTeacher.useMutation();
 
   const handleDelete = () => {
     deleteUser.mutate(
@@ -55,6 +56,21 @@ const DropdownMenuUser: React.FC<UserActionProps> = ({ user }) => {
     );
   };
 
+  const handleDemote = () => {
+    demoteRoleToTeacher.mutate(
+      { id: user.id },
+      {
+        onSuccess: () => {
+          toast.success("Berhasil Menurunkan Jabatan Guru");
+          router.refresh();
+        },
+        onError: (error) => {
+          toast.warning(`Gagal Menurunkan Jabatan Guru: ${error.message}`);
+        },
+      }
+    );
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -70,9 +86,15 @@ const DropdownMenuUser: React.FC<UserActionProps> = ({ user }) => {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={() => handleUpdate()}>
-          Tetapkan Sebagai Guru
-        </DropdownMenuItem>
+        {!user.classId ? (
+          <DropdownMenuItem onClick={() => handleUpdate()}>
+            Tetapkan Sebagai Guru
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem onClick={() => handleDemote()}>
+            Hapus Jabatan
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -94,9 +116,19 @@ export const TableColumnsTeacher: ColumnDef<User>[] = [
     cell: ({ row }) => (
       <div className="capitalize flex gap-1 items-center">
         <div className="relative rounded-full size-7 overflow-hidden">
-          <Image src={row.original.image as string} alt="avatar" objectFit="cover" fill />
+          <Image
+            src={row.original.image as string}
+            alt="avatar"
+            objectFit="cover"
+            fill
+          />
         </div>
-        <p title={row.getValue("name")} className="max-w-20 lg:max-w-fit truncate">{row.getValue("name")}</p>
+        <p
+          title={row.getValue("name")}
+          className="max-w-20 lg:max-w-fit truncate"
+        >
+          {row.getValue("name")}
+        </p>
       </div>
     ),
   },
@@ -139,9 +171,7 @@ export const TableColumnsTeacher: ColumnDef<User>[] = [
     accessorKey: "classId",
     header: () => <p className="text-white">Asal Sekolah</p>,
     cell: ({ row }) => (
-      <div className="capitalize">
-        {row.getValue("classId") || "Tidak ada"}
-      </div>
+      <div className="capitalize">{row.getValue("classId") || "Tidak ada"}</div>
     ),
   },
   {

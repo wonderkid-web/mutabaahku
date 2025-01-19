@@ -56,13 +56,17 @@ export const appRouter = router({
         select: { id: true },
       });
 
-      await prisma.student.create({
+      console.log(teacher_id);
+
+      const student = await prisma.student.create({
         data: {
           name,
           class_id: classId,
           teacher_id: teacher_id?.id,
         },
       });
+
+      console.log(student);
     }),
 
   deleteStudent: procedure
@@ -221,12 +225,33 @@ export const appRouter = router({
         },
       })
   ),
+  demoteRoleToTeacher: procedure.input(z.object({ id: z.string() })).mutation(
+    async ({ input: { id } }) =>
+      await prisma.user.update({
+        where: {
+          id,
+        },
+        data: {
+          role: null,
+          classId: null,
+        },
+      })
+  ),
   updateClassToTeacher: procedure
-    .input(z.object({ id: z.string(), classId: z.number() }))
-    .mutation(
-      async ({ input: { classId, id } }) =>
-        await prisma.user.update({ where: { id }, data: { classId } })
-    ),
+    .input(
+      z.object({
+        id: z.string(),
+        classId: z.number(),
+        currentTeacherId: z.string(),
+      })
+    )
+    .mutation(async ({ input: { classId, id, currentTeacherId } }) => {
+      await prisma.user.updateMany({
+        where: { id: currentTeacherId },
+        data: { classId: null },
+      });
+      await prisma.user.updateMany({ where: { id }, data: { classId } });
+    }),
 });
 
 export type AppRouter = typeof appRouter;

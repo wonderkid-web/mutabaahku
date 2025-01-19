@@ -24,7 +24,6 @@ export default {
     jwt: async ({ user, token }) => {
       if (user) {
         token.user = user;
-
         return token;
       }
       return token;

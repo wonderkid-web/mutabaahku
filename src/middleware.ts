@@ -6,7 +6,7 @@ export default auth(async (req) => {
 
   const operatorPath = "/operator";
   const parentPath = "/parent";
-  const teacherPath = "/teacher";
+  const teacherPath = "/teacher/hafalan";
   const newUserPath = "/auth/signin";
 
   if (!req.auth) {

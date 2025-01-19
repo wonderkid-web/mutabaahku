@@ -17,7 +17,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { add } from "date-fns";
 
 const formStudentSchema = z.object({
   name: z.string({
@@ -26,6 +25,7 @@ const formStudentSchema = z.object({
 });
 
 function ClassStudentSection() {
+  const { data: s } = trpc.getStudents.useQuery();
   const { classId } = setterGlobalClass();
   const {
     data: students,
@@ -39,7 +39,7 @@ function ClassStudentSection() {
       enabled: !!classId,
       refetchOnMount: false,
       refetchOnReconnect: false,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
   );
   const addStudent = trpc.addStudent.useMutation({
@@ -57,11 +57,13 @@ function ClassStudentSection() {
   });
 
   const onSubmit = ({ name }: z.infer<typeof formStudentSchema>) => {
-    if (classId)
+    toast.info(`${classId} & ${name}`);
+    if (classId) {
       addStudent.mutate({
         classId,
         name,
       });
+    }
 
     form.reset();
   };

@@ -3,11 +3,15 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import google from "@/../public/google.svg";
 import logo from "@/../public/1.png";
+import { useState } from "react";
+import LoadingBarSkeleton from "@/components/skeleton/LoadingBarSkeleton";
 
 function Signin() {
+  const [loading, setLoading] = useState(false);
   const handleSignin = async () => {
-    const res = await signIn("google", { redirectTo: "/guru/hafalan" });
-    console.log(res);
+    setLoading(true);
+    await signIn("google", { redirectTo: "/guru/hafalan" });
+    setLoading(false);
   };
 
   return (
@@ -17,7 +21,10 @@ function Signin() {
           <Image src={logo} alt="logo google" objectFit="cover" fill />
         </div>
         <button
-          className="text-lg lg:text-xl px-4 py-2 rounded-sm border border-customSecondary flex justify-between gap-4 items-center text-customSecondary font-semibold shadow-md focus:bg-none"
+          disabled={loading}
+          className={`text-lg lg:text-xl px-4 py-2 rounded-sm border border-customSecondary flex justify-between gap-4 items-center text-customSecondary font-semibold shadow-md focus:bg-none mb-2 transition ${
+            loading ? "bg-gray-100" : "bg-white"
+          }`}
           onClick={() => handleSignin()}
         >
           Masuk dengan Akun google{" "}
@@ -25,6 +32,12 @@ function Signin() {
             <Image src={google} alt="logo google" objectFit="cover" fill />
           </div>
         </button>
+        {loading && (
+          <div className="flex flex-col gap-2">
+            <p>Memproses Masuk...</p>
+            <LoadingBarSkeleton />
+          </div>
+        )}
       </div>
     </div>
   );

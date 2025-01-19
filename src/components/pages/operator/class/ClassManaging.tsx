@@ -9,7 +9,6 @@ function ClassManaging({ classId }: { classId: User["classId"] }) {
     <div className="flex gap-1">
       <ClassListTeacher classId={classId} />
       <ClassDelete classId={classId} />
-      
     </div>
   );
 }

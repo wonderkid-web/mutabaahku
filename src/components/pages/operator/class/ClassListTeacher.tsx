@@ -68,11 +68,7 @@ function ClassListTeacher({ classId }: { classId: User["classId"] }) {
         sideOffset={4}
       >
         <DropdownMenuLabel className="text-xs text-muted-foreground">
-          {!teachers?.filter(
-            (teacher) => teacher.role == "teacher" && !teacher.classId
-          )
-            ? "List Guru"
-            : "Input Murid Baru"}
+          List Guru
         </DropdownMenuLabel>
         {teachers?.length ? (
           teachers
@@ -80,12 +76,23 @@ function ClassListTeacher({ classId }: { classId: User["classId"] }) {
             .map((teacher) => (
               <DropdownMenuItem
                 key={teacher.name}
-                onClick={() =>
-                  updateClassToTeacher.mutate({
-                    id: teacher.id,
-                    classId: classId!,
-                  })
-                }
+                onClick={() => {
+                  const currentTeacherId = teachers?.find(
+                    (t) => t.classId == classId
+                  )?.id;
+
+                  if (currentTeacherId && classId) {
+                    updateClassToTeacher.mutate({
+                      id: teacher.id,
+                      classId,
+                      currentTeacherId,
+                    });
+                  }else{
+                    toast.info("System Bermasalah", {
+                      description: "Diharap untuk mencoba lagi secara berkala."
+                    })
+                  }
+                }}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border relative overflow-hidden">
@@ -112,7 +119,19 @@ function ClassListTeacher({ classId }: { classId: User["classId"] }) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="gap-2 p-2"
-          onClick={() => setGlobalClass(classId!)}
+          onClick={() => {
+            if (teachers?.find((t) => t.classId == classId))
+              setGlobalClass(classId!);
+            else
+              toast.info("Belum Ada Guru di kelas ini", {
+                description: (
+                  <p className="text-xs">
+                    Untuk menambahkan siswa baru pada kelas ini, kamu harus
+                    menambahkan guru terlebih dahulu.
+                  </p>
+                ),
+              });
+          }}
         >
           <div className="flex size-6 items-center justify-center rounded-md border bg-background">
             <Plus className="size-4" />

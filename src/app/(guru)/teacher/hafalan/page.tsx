@@ -6,7 +6,7 @@ import { auth } from "../../../../../auth";
 export const revalidate = 0;
 
 async function HafalanPage() {
-  const students = await caller.getStudentsByClassId({classId:0});
+  const students = await caller.getStudentsByClassId({ classId: 0 });
   return (
     <TahfidzHeader students={students || []} type="Hafalan">
       <StudentSection />

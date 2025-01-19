@@ -36,25 +36,7 @@ import { Mutabaah } from "@/types";
 import { toast } from "sonner";
 import { trpc } from "@/server/client";
 import { daftarSurah } from "@/static";
-import { useQueryClient } from "@tanstack/react-query";
-
-const formSchema = z.object({
-  created_at: z.date({
-    required_error: "Tanggal harus diisi.",
-  }),
-  surah: z.string({
-    required_error: "Nama surah harus dipilih.",
-  }),
-  page_number: z.string({
-    required_error: "Halaman Wajib Di isi!"
-  }).or(z.number()),
-  ayah: z.object({
-    startFrom: z.string().or(z.number()).refine(val=> val !== "", {message: "Gaboleh kosong, wajib di isi"}),
-    endFrom:  z.string().or(z.number()).refine(val=> val !== "", {message: "Gaboleh kosong, wajib di isi"}),
-  }),
-  notes: z.string().min(1, "Catatan harus diisi."),
-  student_id: z.number(),
-});
+import { formSchemaHafalan } from "@/schema";
 
 export function FormMutabaah({
   student_id,
@@ -83,14 +65,12 @@ export function FormMutabaah({
     },
   });
 
-  const queryClient = useQueryClient();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof formSchemaHafalan>>({
+    resolver: zodResolver(formSchemaHafalan),
     defaultValues: {
       created_at: new Date(),
-      surah: "Al-Fatihah",
-      page_number: "0",
+      surah: daftarSurah[0].namaSurah,
+      page_number: "1",
       ayah: {
         startFrom: "1",
         endFrom: "2",
@@ -100,7 +80,7 @@ export function FormMutabaah({
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchemaHafalan>) {
     addHafalan({ ...values, student_id });
     form.reset();
   }
@@ -170,8 +150,8 @@ export function FormMutabaah({
                 </FormControl>
                 <SelectContent>
                   {daftarSurah.map((surah) => (
-                    <SelectItem key={surah} value={surah}>
-                      {surah}
+                    <SelectItem key={surah.namaSurah} value={surah.namaSurah}>
+                      {surah.namaSurah}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -240,12 +220,24 @@ export function FormMutabaah({
                   <Input
                     type="number"
                     min={2}
+                    max={daftarSurah
+                      .find(
+                        (surah) => surah.namaSurah == form.getValues("surah")
+                      )
+                      ?.banyakAyat.toString()}
                     placeholder="contoh: 2"
                     {...field}
                     className="border border-customSecondary"
                   />
                 </FormControl>
-                <FormDescription>Masukkan rentang (contoh:5)</FormDescription>
+                <FormDescription>
+                  Masukkan rentang (contoh:5) | Batas ayat ini:{" "}
+                  {
+                    daftarSurah.find(
+                      (surah) => surah.namaSurah == form.getValues("surah")
+                    )?.banyakAyat
+                  } ayat.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

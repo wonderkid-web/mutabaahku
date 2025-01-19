@@ -10,20 +10,17 @@ const tajawal = Tajawal({
   subsets: ["arabic", "latin"],
 });
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${tajawal.className} antialiased`}>
-        <Toaster position="top-center" />
-        <TrpcWrapper>
-          <NextAuthWrapper>{children}</NextAuthWrapper>
-        </TrpcWrapper>
-      </body>
-    </html>
+    <div className={`${tajawal.className} antialiased`}>
+      <Toaster position="top-center" />
+      <TrpcWrapper>
+        <NextAuthWrapper>{children}</NextAuthWrapper>
+      </TrpcWrapper>
+    </div>
   );
 }
