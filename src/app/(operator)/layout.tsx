@@ -19,11 +19,14 @@ import "@/app/globals.css";
 import NextAuthWrapper from "@/components/wrapper/NextAuthWrapper";
 import { OperatorAppSidebar } from "@/components/pages/operator/OperatorAppSidebar";
 
+
 const tajawal = Tajawal({
   style: "normal",
   weight: ["400"],
   subsets: ["arabic", "latin"],
 });
+
+export const dynamic = "force-dynamic"
 
 export default function RootLayout({
   children,
