@@ -77,20 +77,19 @@ function ClassListTeacher({ classId }: { classId: User["classId"] }) {
               <DropdownMenuItem
                 key={teacher.name}
                 onClick={() => {
-                  const currentTeacherId = teachers?.find(
-                    (t) => t.classId == classId
-                  )?.id;
+                  const currentTeacherId =
+                    teachers?.find((t) => t.classId == classId)?.id ?? null;
 
-                  if (currentTeacherId && classId) {
+                  if (classId) {
                     updateClassToTeacher.mutate({
                       id: teacher.id,
                       classId,
                       currentTeacherId,
                     });
-                  }else{
+                  } else {
                     toast.info("System Bermasalah", {
-                      description: "Diharap untuk mencoba lagi secara berkala."
-                    })
+                      description: "Diharap untuk mencoba lagi secara berkala.",
+                    });
                   }
                 }}
                 className="gap-2 p-2"

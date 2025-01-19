@@ -63,14 +63,14 @@ const data = {
           title: "Kelas",
           url: "/operator/class",
         },
-        {
-          title: "Murid",
-          url: "/operator/student",
-        },
-        {
-          title: "Role",
-          url: "/operator/role",
-        },
+        // {
+        //   title: "Murid",
+        //   url: "/operator/student",
+        // },
+        // {
+        //   title: "Role",
+        //   url: "/operator/role",
+        // },
       ],
     },
     {

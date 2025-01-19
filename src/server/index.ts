@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { string, z } from "zod";
 import { procedure, router } from "./trpc";
 import prisma from "@/helper/prisma";
 import { formSchema } from "@/helper/schema";
@@ -242,14 +242,16 @@ export const appRouter = router({
       z.object({
         id: z.string(),
         classId: z.number(),
-        currentTeacherId: z.string(),
+        currentTeacherId: z.string().nullable(),
       })
     )
     .mutation(async ({ input: { classId, id, currentTeacherId } }) => {
-      await prisma.user.updateMany({
-        where: { id: currentTeacherId },
-        data: { classId: null },
-      });
+      if (currentTeacherId) {
+        await prisma.user.updateMany({
+          where: { id: currentTeacherId },
+          data: { classId: null },
+        });
+      }
       await prisma.user.updateMany({ where: { id }, data: { classId } });
     }),
 });
