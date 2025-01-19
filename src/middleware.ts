@@ -25,7 +25,7 @@ export default auth(async (req) => {
   }
 
   const isTeacher = req.auth?.user?.role == "teacher";
-  const teacherRoutes = [teacherPath, '/windows11', '/ios', 'android'].some((route) =>
+  const teacherRoutes = [teacherPath, '/windows11', '/ios', '/android'].some((route) =>
     req.nextUrl.pathname.startsWith(route)
   );
 
@@ -35,7 +35,7 @@ export default auth(async (req) => {
   }
 
   const isParent = req.auth?.user?.role == "parent";
-  const parentRoutes = [parentPath, '/windows11', '/ios', 'android'].some((route) =>
+  const parentRoutes = [parentPath, '/windows11', '/ios', '/android'].some((route) =>
     req.nextUrl.pathname.startsWith(route)
   );
 
@@ -45,7 +45,7 @@ export default auth(async (req) => {
   }
 
   const isOperator = req.auth?.user?.role == "operator";
-  const operatorRoutes = [operatorPath, '/windows11', '/ios', 'android'].some((route) =>
+  const operatorRoutes = [operatorPath, '/windows11', '/ios', '/android'].some((route) =>
     req.nextUrl.pathname.startsWith(route)
   );
 
