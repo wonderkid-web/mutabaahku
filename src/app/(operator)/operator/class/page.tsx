@@ -5,6 +5,8 @@ import ClassStudentSection from "@/components/pages/operator/class/ClassStudentS
 async function OperatorClass() {
   return (
     <section className="max-h-full overflow-auto flex flex-col">
+
+      {/* FITUR BARU BRANCH 2 SEARCH BAR */}
       <ClassList />
 
       <ClassFormCreate />
