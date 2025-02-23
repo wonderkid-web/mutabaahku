@@ -1,8 +1,7 @@
 "use client";
 
+import GridSkeleton from "@/components/skeleton/GridSkeleton";
 import LoadingBarSkeleton from "@/components/skeleton/LoadingBarSkeleton";
-import Loader from "@/components/skeleton/LoadingBarSkeleton";
-import { setStudentData } from "@/helper/zustand";
 import { trpc } from "@/server/client";
 import { initialJuzData } from "@/static";
 import { Juz } from "@/types";
@@ -11,23 +10,19 @@ import React, { useState } from "react";
 import { toast } from "sonner";
 
 export function SectionManageMutqin() {
-  const { student_id } = setStudentData();
-  const session = useSession()
+  const session = useSession();
 
   return (
     <div className="overflow-x-auto container px-4 mb-4">
-      <pre>
-        {JSON.stringify(session, null, 2)}
-      </pre>
-      {student_id && <TableManageMutqin student_id={student_id} />}
-
-
+      {session.data?.user?.studentId && (
+        <TableManageMutqin student_id={session.data?.user?.studentId} />
+      )}
     </div>
   );
 }
 
 function TableManageMutqin({ student_id }: { student_id: number }) {
-  const { data, isLoading, refetch } = trpc.getStudent.useQuery(
+  const { data, isLoading } = trpc.getStudent.useQuery(
     {
       student_id,
     },
@@ -38,37 +33,20 @@ function TableManageMutqin({ student_id }: { student_id: number }) {
       refetchOnWindowFocus: false,
     }
   );
-  const { mutate: updateMutqinLevel } = trpc.updateMutqinLevel.useMutation({
-    onSuccess: () => {
-      refetch();
-      toast.success("Berhasil Mengupdate Mutqin");
-    },
-    onMutate: () => {
-      toast.info("Proses Mengupdate Mutqin");
-    },
-    onError: () => {
-      toast.error("Gagal Mengupdate Mutqin");
-    },
-  });
 
   const [juzData] = useState<Juz[]>(initialJuzData);
 
-  const handleUpdate = (id: number) => {
-    updateMutqinLevel({
-      student_id,
-      status: id,
-    });
-  };
-
-  if (isLoading) return <LoadingBarSkeleton className="scale-150 mx-auto" />;
+  if (isLoading) return <GridSkeleton />;
 
   if (!data) return <h1>Terdapat Kesalahan</h1>;
   return (
     <table className="min-w-full bg-white rounded-md border border-customSecondary">
       <thead className="bg-customSecondary text-white">
         <tr>
-          <th className="py-2 px-4 border-b border-r border-white text-left hidden lg:block
-          ">
+          <th
+            className="py-2 px-4 border-b border-r border-white text-left hidden lg:block
+          "
+          >
             No
           </th>
           <th className="py-2 px-4 border-b border-r border-white text-left">
@@ -80,7 +58,6 @@ function TableManageMutqin({ student_id }: { student_id: number }) {
           <th className="py-2 px-4 border-b border-r border-white text-center">
             Status
           </th>
-          <th className="py-2 px-4 border-b text-center">Opsi</th>
         </tr>
       </thead>
       <tbody>
@@ -116,14 +93,6 @@ function TableManageMutqin({ student_id }: { student_id: number }) {
                     : "Sedang Menjalani"
                   : "Belum Selesai"}
               </span>
-            </td>
-            <td className="py-2 px-4 text-center">
-              <button
-                onClick={() => handleUpdate(juz.id)}
-                className="hover:bg-customPrimary bg-customSecondary text-white font-bold py-1 px-2 text-sm rounded"
-              >
-                Update
-              </button>
             </td>
           </tr>
         ))}

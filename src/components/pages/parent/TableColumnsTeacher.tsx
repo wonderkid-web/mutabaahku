@@ -15,12 +15,13 @@ import { trpc } from "@/server/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { setParentData } from "@/helper/zustand";
 
 type UserActionProps = {
   user: User;
 };
 
-const DropdownMenuUser: React.FC<UserActionProps> = ({ user }) => {
+const DropdownMenuParent: React.FC<UserActionProps> = ({ user }) => {
   const router = useRouter();
   const deleteUser = trpc.deleteUser.useMutation();
   const updateRole = trpc.updateRole.useMutation();
@@ -102,32 +103,39 @@ const DropdownMenuUser: React.FC<UserActionProps> = ({ user }) => {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
 
-        {!user.role && (
-          <>
-            <DropdownMenuItem onClick={() => handleUpdateRole("teacher")}>
-              Tetapkan Sebagai Guru
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleUpdateRole("parent")}>
-              Tetapkan Sebagai Orang Tua
-            </DropdownMenuItem>
-          </>
-        )}
+        <DropdownMenuItem onClick={() => handleUpdateRole("parent")}>
+          Tetapkan Sebagai Orang Tua
+        </DropdownMenuItem>
 
-        {user.role == "teacher" && (
-          <DropdownMenuItem onClick={() => handleDemote()}>
-            Hapus Jabatan Guru
-          </DropdownMenuItem>
-        )}
+        <DropdownMenuItem onClick={() => handleDemoteParent()}>
+          Hapus Jabatan Orang Tua
+        </DropdownMenuItem>
 
-        {user.role == "parent" && (
-          <>
-            <DropdownMenuItem onClick={() => handleDemoteParent()}>
-              Hapus Jabatan Orang Tua
-            </DropdownMenuItem>
-          </>
-        )}
+        <DropdownMenuItem
+          onClick={() =>
+            setParentData.getState().setParentData({
+              id: user.id,
+              name: user.name!,
+            })
+          }
+        >
+          Lihat detail
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+};
+
+const StudentName = ({ id }: { id: number }) => {
+  const { data } = trpc.getStudent.useQuery({
+    student_id: id,
+  });
+
+  console.log(data);
+  return (
+    <div className="capitalize">
+      {data?.name || "Tidak Ada Nama"}
+    </div>
   );
 };
 
@@ -199,11 +207,11 @@ export const TableColumnsTeacher: ColumnDef<User>[] = [
     ),
   },
   {
-    accessorKey: "classId",
-    header: () => <p className="text-white">Asal Sekolah</p>,
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("classId") || "Tidak ada"}</div>
-    ),
+    accessorKey: "studentId",
+    header: () => <p className="text-white">Nama Anak</p>,
+    cell: ({ row }) => {
+      return <StudentName id={row.getValue("studentId")} />;
+    },
   },
   {
     accessorKey: "createdAt",
@@ -220,7 +228,7 @@ export const TableColumnsTeacher: ColumnDef<User>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const user = row.original;
-      return <DropdownMenuUser user={user} />;
+      return <DropdownMenuParent user={user} />;
     },
   },
 ];

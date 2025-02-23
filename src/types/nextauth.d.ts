@@ -24,6 +24,7 @@ interface IUser extends DefaultUser {
    */
   schoolOrigin?: string;
   classId?: number;
+  studentId?: number;
 }
 
 declare module "next-auth" {

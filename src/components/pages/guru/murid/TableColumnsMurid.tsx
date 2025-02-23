@@ -9,12 +9,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { formatedDate } from "@/helper";
 
-import { setStudentData } from "@/helper/zustand";
+import { setParentData, setStudentData } from "@/helper/zustand";
 import { trpc } from "@/server/client";
 import { Student } from "@/types";
-import {
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowDownUpIcon, EllipsisIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -38,6 +36,45 @@ function ComponentDeleteStudent({ id }: { id: number; classId: number }) {
   return (
     <DropdownMenuItem onClick={() => deleteStudent.mutate({ id }, {})}>
       Hapus Siswa
+    </DropdownMenuItem>
+  );
+}
+
+function ComponentSetChildren({
+  parentId,
+  childrenId,
+  parentName,
+  childrenName,
+}: {
+  parentId: string;
+  childrenId: number;
+  parentName: string;
+  childrenName: string;
+}) {
+  const queryClient = useQueryClient();
+  const updateChlidrenToParent = trpc.updateChildrenToParent.useMutation({
+    onSuccess: () => {
+      toast.success(
+        `Berhasil Menetapkan ${childrenName} sebagai Anak dari Bapak/Ibuk ${parentName}`
+      );
+      // @ts-ignore
+      queryClient.invalidateQueries(["getStudents"]);
+    },
+    onMutate: () => {
+      toast.info("Menetapkan Murid...");
+    },
+    onError: () => {
+      toast.warning("Gagal Menetapkan Murid!");
+    },
+  });
+
+  return (
+    <DropdownMenuItem
+      onClick={() =>
+        updateChlidrenToParent.mutate({ parentId, childrenId }, {})
+      }
+    >
+      {`Tetapkan Siswa Sebagai Anak Bapak/Ibu ${parentName.toLocaleUpperCase()}`}
     </DropdownMenuItem>
   );
 }
@@ -99,6 +136,12 @@ export const TableColumnsMurid: ColumnDef<Student>[] = [
             >
               Lihat detail
             </DropdownMenuItem>
+            <ComponentSetChildren
+              parentId={setParentData.getState().id!}
+              parentName={setParentData.getState().name!}
+              childrenId={student.id}
+              childrenName={student.name}
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       );

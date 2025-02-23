@@ -15,10 +15,37 @@ type ParamsStudentData = {
   student_id: number;
 };
 
+
+type ParamsParentData = {
+  name: string;
+  id: string;
+};
+
 export type SetStudentData = {
   name: null | string;
   student_id: null | number;
   setStudentData: (newData: ParamsStudentData) => void;
+};
+
+
+export type SetParentData = {
+  name: null | string;
+  id: null | string;
+  setParentData: (newData: ParamsParentData) => void;
+};
+
+export type Parent = {
+  image: string | null;
+  id: string;
+  name: string | null;
+  role: string | null;
+  classId: number | null;
+  email: string;
+  schoolOrigin: string | null;
+  emailVerified: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  studentId: number | null;
 };
 
 export type Mutabaah = {
@@ -63,5 +90,7 @@ export type SetterGlobaClass = {
   classId: Classes["id"] | null;
   teachers: { classId: User["classId"]; id: User["id"] }[] | null;
   setGlobalClass: (classId: Classes["id"]) => void;
-  setGlobalTeacher: (teacherData:  { classId: User["classId"]; id: User["id"] }[]) => void;
+  setGlobalTeacher: (
+    teacherData: { classId: User["classId"]; id: User["id"] }[]
+  ) => void;
 };

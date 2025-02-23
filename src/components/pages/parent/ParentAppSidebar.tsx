@@ -56,16 +56,8 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "Member",
-          url: "/operator/teacher",
-        },
-        {
-          title: "Kelas",
-          url: "/operator/class",
-        },
-        {
-          title: "Orang Tua",
-          url: "/operator/parent",
+          title: "Profile Anak",
+          url: "/parent/children",
         },
         // {
         //   title: "Murid",
@@ -134,7 +126,7 @@ const data = {
 }
 
 
-export function OperatorAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function ParentAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const session = useSession()
 
   return (

@@ -1,7 +1,6 @@
 import StudentSection from "@/components/pages/guru/hafalan/StudentSection";
 import TahfidzHeader from "@/components/pages/guru/TahfidzHeader";
 import { caller } from "@/server/serverClient";
-import { auth } from "../../../../../auth";
 
 export const revalidate = 0;
 

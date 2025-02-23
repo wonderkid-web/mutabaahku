@@ -22,6 +22,7 @@ export const appRouter = router({
         select: {
           id: true,
           status: true,
+          name: true
         },
       })
     ),
@@ -45,6 +46,21 @@ export const appRouter = router({
             },
           });
         }
+      }
+    }),
+
+  getChildrensById: procedure
+    .input(z.object({ id: z.number().optional() }))
+    .query(async ({ input: { id } }) => {
+      const session = await auth();
+
+      if (session?.user?.classId) {
+        const class_id = session.user.classId;
+        return prisma.student.findMany({
+          where: {
+            id,
+          },
+        });
       }
     }),
 
@@ -178,6 +194,14 @@ export const appRouter = router({
         await prisma.renamedclass.delete({ where: { id } })
     ),
   getUsers: procedure.query(async () => await prisma.user.findMany()),
+  getParents: procedure.query(
+    async () =>
+      await prisma.user.findMany({
+        where: {
+          role: "parent",
+        },
+      })
+  ),
   getUser: procedure
     .input(z.object({ id: z.string() }))
     .query(
@@ -214,18 +238,20 @@ export const appRouter = router({
       })
   ),
 
-  updateRoleToTeacher: procedure.input(z.object({ id: z.string() })).mutation(
-    async ({ input: { id } }) =>
-      await prisma.user.update({
-        where: {
-          id,
-        },
-        data: {
-          role: "teacher",
-        },
-      })
-  ),
-  demoteRoleToTeacher: procedure.input(z.object({ id: z.string() })).mutation(
+  updateRole: procedure
+    .input(z.object({ id: z.string(), role: z.enum(["teacher", "parent"]) }))
+    .mutation(
+      async ({ input: { id, role } }) =>
+        await prisma.user.update({
+          where: {
+            id,
+          },
+          data: {
+            role,
+          },
+        })
+    ),
+  demoteTeacherRole: procedure.input(z.object({ id: z.string() })).mutation(
     async ({ input: { id } }) =>
       await prisma.user.update({
         where: {
@@ -234,6 +260,17 @@ export const appRouter = router({
         data: {
           role: null,
           classId: null,
+        },
+      })
+  ),
+  demoteParentRole: procedure.input(z.object({ id: z.string() })).mutation(
+    async ({ input: { id } }) =>
+      await prisma.user.update({
+        where: {
+          id,
+        },
+        data: {
+          role: null,
         },
       })
   ),
@@ -254,6 +291,20 @@ export const appRouter = router({
       }
       await prisma.user.updateMany({ where: { id }, data: { classId } });
     }),
+
+  updateChildrenToParent: procedure
+    .input(z.object({ parentId: z.string(), childrenId: z.number() }))
+    .mutation(
+      async ({ input: { parentId, childrenId } }) =>
+        await prisma.user.update({
+          where: {
+            id: parentId,
+          },
+          data: {
+            studentId: childrenId,
+          },
+        })
+    ),
 });
 
 export type AppRouter = typeof appRouter;
