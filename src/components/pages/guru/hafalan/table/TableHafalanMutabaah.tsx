@@ -56,9 +56,11 @@ function TableMutabaah({
     },
   });
 
+
   return (
     <div className="w-full">
-      <TableHeaderHafalan setPagination={setPagination} />
+
+      <TableHeaderHafalan setPagination={setPagination} data={data}/>
 
       <TableBody columns={columns} table={table} key={0} />
 

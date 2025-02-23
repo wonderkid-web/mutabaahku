@@ -48,7 +48,7 @@ export function TableMurid({ data }: { data: Student[] }) {
 
   return (
     <div className="w-full">
-      <TableSearch<Student> table={table} />
+      <TableSearch<Student> table={table}  data={data}/>
 
       <TableBody table={table} columns={columns} key={0} />
 

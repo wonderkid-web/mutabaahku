@@ -48,7 +48,7 @@ export function TableParent({ data }: { data: User[] }) {
 
   return (
     <div className="w-full">
-      <TableSearch<User> table={table} />
+      <TableSearch<User> table={table} data={data}/>
 
       <TableBody table={table} columns={columns} key={0} />
 

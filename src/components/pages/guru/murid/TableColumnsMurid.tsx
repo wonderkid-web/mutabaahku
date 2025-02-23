@@ -15,6 +15,7 @@ import { Student } from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowDownUpIcon, EllipsisIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 
 function ComponentDeleteStudent({ id }: { id: number; classId: number }) {
@@ -51,6 +52,7 @@ function ComponentSetChildren({
   parentName: string;
   childrenName: string;
 }) {
+  const pathname = usePathname()
   const queryClient = useQueryClient();
   const updateChlidrenToParent = trpc.updateChildrenToParent.useMutation({
     onSuccess: () => {
@@ -68,6 +70,7 @@ function ComponentSetChildren({
     },
   });
 
+  if(pathname.includes("parent"))
   return (
     <DropdownMenuItem
       onClick={() =>

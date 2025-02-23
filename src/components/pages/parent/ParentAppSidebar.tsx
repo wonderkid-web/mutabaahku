@@ -50,7 +50,7 @@ const data = {
   ],
   navMain: [
     {
-      title: "Menejemen",
+      title: "Reporting Mutabaah Anak",
       url: "/",
       icon: SquareChartGantt,
       isActive: true,
