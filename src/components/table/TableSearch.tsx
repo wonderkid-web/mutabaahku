@@ -12,13 +12,21 @@ import {
 import { Table } from "@tanstack/react-table";
 import { ChevronDownIcon } from "lucide-react";
 import exportToExcel from "@/helper";
+import { Dispatch, SetStateAction } from "react";
 
 export default function TableSearch<T>({
   table,
   data,
+  setPagination,
 }: {
   table: Table<T>;
   data: any;
+  setPagination: Dispatch<
+    SetStateAction<{
+      pageSize: number;
+      pageIndex: number;
+    }>
+  >;
 }) {
   return (
     <div className="flex justify-between items-center gap-2 py-4">
@@ -38,6 +46,29 @@ export default function TableSearch<T>({
         >
           Export to Excel
         </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild className="border-customSecondary">
+            <Button variant="outline" className="ml-auto">
+              Jumlah Baris <ChevronDownIcon className="" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="border-customSecondary flex gap-2 flex-col cursor-pointer"
+            align="end"
+          >
+            {[5, 10, 15].map((pageSize) => (
+              <p
+              key={pageSize}
+              className="hover:bg-slate-100 flex gap-2 justify-center"
+                onClick={() => setPagination((prev) => ({ ...prev, pageSize }))}
+              >
+                {pageSize}
+              </p>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="border-customSecondary">
             <Button variant="outline" className="ml-auto">

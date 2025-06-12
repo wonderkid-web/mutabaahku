@@ -24,6 +24,10 @@ export function TableMurid({ data }: { data: Student[] }) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [pagination, setPagination] = useState({
+    pageSize: 5,
+    pageIndex: 0,
+  });
 
   const table = useReactTable({
     data: data || [],
@@ -36,7 +40,9 @@ export function TableMurid({ data }: { data: Student[] }) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onPaginationChange: setPagination,
     state: {
+      pagination,
       sorting,
       columnFilters,
       columnVisibility,
@@ -48,7 +54,7 @@ export function TableMurid({ data }: { data: Student[] }) {
 
   return (
     <div className="w-full">
-      <TableSearch<Student> table={table}  data={data}/>
+      <TableSearch<Student> table={table} data={data} setPagination={setPagination}/>
 
       <TableBody table={table} columns={columns} key={0} />
 

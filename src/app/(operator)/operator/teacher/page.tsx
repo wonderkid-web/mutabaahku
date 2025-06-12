@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { ReactNode, Suspense } from "react";
 import { TableTeacher } from "@/components/pages/operator/teacher/TableTeacher";
 import { caller } from "@/server/serverClient";
 import GridSkeleton from "@/components/skeleton/GridSkeleton";
@@ -15,7 +15,7 @@ function TeacherPage() {
       <div className="container mx-auto p-4 flex-1">
         <Suspense fallback={<GridSkeleton />}>
           {/* @ts-ignore */}
-          <TableTeacherWrapper />
+          <TableTeacherWrapper /> 
         </Suspense>
       </div>
     </section>

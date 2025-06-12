@@ -64,6 +64,8 @@ function TableMutabaah({
 
       <TableBody columns={columns} table={table} key={0} />
 
+    
+
       <TableFooter<Mutabaah> table={table} />
     </div>
   );

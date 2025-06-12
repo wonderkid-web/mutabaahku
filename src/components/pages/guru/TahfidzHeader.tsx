@@ -23,6 +23,7 @@ export default function TahfidzHeader({
           Table Murid
         </h1>
         <TableMurid data={students} />
+        <pre>{JSON.stringify(students, null, 2)} ==</pre>
       </div>
 
       {children}

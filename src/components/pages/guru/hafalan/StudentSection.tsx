@@ -17,7 +17,6 @@ function StudentSection() {
     }
   );
 
-
   if (name)
     return (
       <>
@@ -27,6 +26,7 @@ function StudentSection() {
           <div className="container mx-auto p-4">
             {/* @ts-ignore */}
             <TableMutabaah name={name} data={hafalan} />
+            
           </div>
         )}
 
