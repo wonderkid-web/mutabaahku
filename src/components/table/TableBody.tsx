@@ -11,9 +11,7 @@ import {
   flexRender,
   Table as TableType,
 } from "@tanstack/react-table";
-import { useRef } from "react";
 import TableExport from "./parent/TableExport";
-import ButtonMutabaahExport from "../button/ButtonMutabaahExport";
 
 function TableBody<T>({
   table,
@@ -22,7 +20,6 @@ function TableBody<T>({
   table: TableType<T>;
   columns: ColumnDef<T>[];
 }) {
-  const tableRef = useRef<HTMLTableElement | null>(null);
   return (
     <>
       <div className="rounded-md border border-customSecondary text-customPrimary max-w-[91vw] lg:max-w-screen-2xl overflow-auto">
@@ -83,8 +80,7 @@ function TableBody<T>({
         </Table>
       </div>
 
-      <ButtonMutabaahExport tableRef={tableRef.current as HTMLTableElement} />
-      <TableExport table={table} ref={tableRef} />
+      <TableExport table={table} />
     </>
   );
 }

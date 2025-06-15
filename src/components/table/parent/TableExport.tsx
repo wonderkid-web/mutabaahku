@@ -1,14 +1,18 @@
-import React, { forwardRef, LegacyRef } from "react";
+"use client";
+import React, { MutableRefObject, useRef } from "react";
 import { flexRender, Table as TableType } from "@tanstack/react-table";
+import ButtonMutabaahExport from "@/components/button/ButtonMutabaahExport";
 
 type TableExportProps<T> = {
   table: TableType<T>;
 };
 
-const TableExport = forwardRef<HTMLTableElement, TableExportProps<any>>(
-  <T,>({ table }: TableExportProps<T>, ref: LegacyRef<HTMLTableElement>) => {
-    return (
-      <table ref={ref} className="hidden">
+const TableExport = <T,>({ table }: TableExportProps<T>) => {
+  const tableRef = useRef<HTMLTableElement | null>(null);
+
+  return (
+    <>
+      <table ref={tableRef} className="hidden">
         <thead>
           <tr>
             {table.getHeaderGroups()[0].headers.map((header) => (
@@ -38,10 +42,11 @@ const TableExport = forwardRef<HTMLTableElement, TableExportProps<any>>(
           ))}
         </tbody>
       </table>
-    );
-  }
-);
-
-TableExport.displayName = "TableExport"
+      <ButtonMutabaahExport
+        tableRef={tableRef as MutableRefObject<HTMLTableElement>}
+      />
+    </>
+  );
+};
 
 export default TableExport;

@@ -1,9 +1,7 @@
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import localFont from "next/font/local";
-import { utils, writeFileXLSX } from "xlsx";
-import { saveAs } from "file-saver";
-import { LegacyRef } from "react";
+import * as XLSX from "xlsx";
 
 export const quranFont = localFont({
   src: "../app/fonts/Quran.otf",
@@ -17,8 +15,8 @@ export const exportTableToExcel = (
   type: "Muroj'ah" | "Murid" | "Mutqin",
   tableRef: HTMLTableElement
 ) => {
-  const wb = utils.table_to_book(tableRef);
-  writeFileXLSX(wb, `${type}.xlsx`);
+  const wb = XLSX.utils.table_to_book(tableRef);
+  XLSX.writeFileXLSX(wb, `${type}.xlsx`);
 };
 
 const exportToExcel = (data: any, fileName = "data") => {
