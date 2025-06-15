@@ -11,6 +11,9 @@ import {
   flexRender,
   Table as TableType,
 } from "@tanstack/react-table";
+import { useRef } from "react";
+import TableExport from "./parent/TableExport";
+import ButtonMutabaahExport from "../button/ButtonMutabaahExport";
 
 function TableBody<T>({
   table,
@@ -19,57 +22,70 @@ function TableBody<T>({
   table: TableType<T>;
   columns: ColumnDef<T>[];
 }) {
+  const tableRef = useRef<HTMLTableElement | null>(null);
   return (
-    <div className="rounded-md border border-customSecondary text-customPrimary max-w-[91vw] lg:max-w-screen-2xl overflow-auto">
-      <Table className="min-w-96">
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              className="border-customSecondary bg-customSecondary text-white!"
-              style={{
-                backgroundColor: "rgb(3 91 115 / var(--tw-border-opacity, 1))",
-              }}
-              key={headerGroup.id}
-            >
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBodyElement>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+    <>
+      <div className="rounded-md border border-customSecondary text-customPrimary max-w-[91vw] lg:max-w-screen-2xl overflow-auto">
+        <Table className="min-w-96">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                className="border-customSecondary bg-customSecondary text-white!"
+                style={{
+                  backgroundColor:
+                    "rgb(3 91 115 / var(--tw-border-opacity, 1))",
+                }}
+                key={headerGroup.id}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                Tidak ada hasil.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBodyElement>
-      </Table>
-    </div>
+            ))}
+          </TableHeader>
+          <TableBodyElement>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  Tidak ada hasil.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBodyElement>
+        </Table>
+      </div>
+
+      <ButtonMutabaahExport tableRef={tableRef.current as HTMLTableElement} />
+      <TableExport table={table} ref={tableRef} />
+    </>
   );
 }
 

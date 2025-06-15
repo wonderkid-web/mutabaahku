@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
+import { utils, writeFileXLSX } from "xlsx";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Table } from "@tanstack/react-table";
 import { ChevronDownIcon } from "lucide-react";
-import exportToExcel from "@/helper";
-import { Dispatch, SetStateAction } from "react";
+import { exportTableToExcel } from "@/helper";
+import { Dispatch, SetStateAction, useRef } from "react";
+
+import TableExport from "./parent/TableExport";
 
 export default function TableSearch<T>({
   table,
@@ -39,14 +41,6 @@ export default function TableSearch<T>({
         className="max-w-sm shadow-none border-customPrimary"
       />
       <div className="flex gap-2">
-        <Button
-          onClick={() => exportToExcel(data, "Student_Data")}
-          className="text-customPrimary px-4 py-2 border-customSecondary"
-          variant={"outline"}
-        >
-          Export to Excel
-        </Button>
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="border-customSecondary">
             <Button variant="outline" className="ml-auto">
@@ -59,8 +53,8 @@ export default function TableSearch<T>({
           >
             {[5, 10, 15].map((pageSize) => (
               <p
-              key={pageSize}
-              className="hover:bg-slate-100 flex gap-2 justify-center"
+                key={pageSize}
+                className="hover:bg-slate-100 flex gap-2 justify-center"
                 onClick={() => setPagination((prev) => ({ ...prev, pageSize }))}
               >
                 {pageSize}

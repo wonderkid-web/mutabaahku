@@ -15,9 +15,10 @@ import { Student } from "@/types";
 import TableBody from "../../../table/TableBody";
 import { TableColumnsMurid as columns } from "./TableColumnsMurid";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { TableFooter } from "../../../table/TableFooter";
 import TableSearch from "../../../table/TableSearch";
+import TableExport from "@/components/table/parent/TableExport";
 
 export function TableMurid({ data }: { data: Student[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -28,6 +29,8 @@ export function TableMurid({ data }: { data: Student[] }) {
     pageSize: 5,
     pageIndex: 0,
   });
+
+  const tableRef = useRef<HTMLTableElement | null>(null);
 
   const table = useReactTable({
     data: data || [],
@@ -50,11 +53,14 @@ export function TableMurid({ data }: { data: Student[] }) {
     },
   });
 
-  console.log("render pas ngetik");
-
   return (
     <div className="w-full">
-      <TableSearch<Student> table={table} data={data} setPagination={setPagination}/>
+      <TableSearch<Student>
+        table={table}
+        data={data}
+        setPagination={setPagination}
+
+      />
 
       <TableBody table={table} columns={columns} key={0} />
 

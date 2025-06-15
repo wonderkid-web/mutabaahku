@@ -4,11 +4,13 @@ import { Student } from "@/types";
 import { ReactNode } from "react";
 
 export default function TahfidzHeader({
-  children, students, type
+  children,
+  students,
+  type,
 }: {
   children: ReactNode;
-  students: Student[],
-  type: "Hafalan" | "Muroj'ah" | "Mutqin"
+  students: Student[];
+  type: "Hafalan" | "Muroj'ah" | "Mutqin";
 }) {
   return (
     <section className="max-h-full overflow-auto flex flex-col">
@@ -19,11 +21,8 @@ export default function TahfidzHeader({
       </div>
 
       <div className="container mx-auto p-4 flex-1">
-        <h1 className="text-2xl font-bold text-customSecondary">
-          Table Murid
-        </h1>
+        <h1 className="text-2xl font-bold text-customSecondary">Table Murid</h1>
         <TableMurid data={students} />
-        <pre>{JSON.stringify(students, null, 2)} ==</pre>
       </div>
 
       {children}

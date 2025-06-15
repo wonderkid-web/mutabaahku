@@ -9,7 +9,6 @@ async function HafalanPage() {
   return (
     <TahfidzHeader students={students || []} type="Hafalan">
       <StudentSection />
-    
     </TahfidzHeader>
   );
 }

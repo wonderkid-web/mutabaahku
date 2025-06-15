@@ -54,8 +54,14 @@ export function TableTeacher({ data }: { data: User[] }) {
 
   return (
     <div className="w-full">
-      <TableSearch<User> table={table} data={data} setPagination={setPagination} />
+      {/* @ts-ignore */}
+      <TableSearch<User>
+        table={table}
+        data={data}
+        setPagination={setPagination}
+      />
 
+      {/* @ts-ignore */}
       <TableBody table={table} columns={columns} key={0} />
 
       <TableFooter<User> table={table} />

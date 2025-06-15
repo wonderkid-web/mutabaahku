@@ -59,6 +59,7 @@ function TableMurojah({ data }: { data: Mutabaah[] | [] }) {
     <div className="w-full">
       <TableHeaderMurojah setPagination={setPagination} data={data} />
 
+      {/* @ts-ignore */}
       <TableBody columns={columns} table={table} key={0} />
 
       <TableFooter table={table} />

@@ -13,7 +13,6 @@ import {
 
 import { Mutabaah, Student } from "@/types";
 
-
 import { TableColumnsHafalan as columns } from "./TableColumnsHafalan";
 import TableHeaderHafalan from "./TableHeaderHafalan";
 import { memo, useState } from "react";
@@ -59,12 +58,10 @@ function TableMutabaah({
 
   return (
     <div className="w-full">
+      <TableHeaderHafalan setPagination={setPagination} data={data} />
 
-      <TableHeaderHafalan setPagination={setPagination} data={data}/>
-
+      {/* @ts-ignore */}
       <TableBody columns={columns} table={table} key={0} />
-
-    
 
       <TableFooter<Mutabaah> table={table} />
     </div>

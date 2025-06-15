@@ -30,13 +30,13 @@ function TableHeaderHafalan({
         Table Mutabaah {name} | {format(new Date(), "MMMM", { locale: id })}
       </h1>
       <div className="flex gap-2">
-        <Button
+        {/* <Button
           onClick={() => exportToExcel(data, "Student_Data")}
           className="text-customPrimary px-4 py-2 border-customSecondary"
           variant={"outline"}
         >
           Export to Excel
-        </Button>
+        </Button> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="border-customSecondary">
             <Button variant="outline" className="ml-auto">
@@ -63,6 +63,7 @@ function TableHeaderHafalan({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      
     </div>
   );
 }
