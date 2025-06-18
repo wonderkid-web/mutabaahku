@@ -28,18 +28,18 @@ export function TableHeaderMurojah({
   const { month, setGlobalMonth, setGlobalYear } = setterGlobalClass();
 
   return (
-    <div className="flex justify-between items-center py-4">
-      <h1 className="text-2xl font-bold  text-customSecondary">
+    <div className="flex flex-col justify-start flex-wrap md:flex-row gap-2 md:items-center py-4 ">
+      <h1 className="text-left text-2xl font-bold  text-customSecondary">
         Table Mutabaah {name} | {getMonthName(month!)}
       </h1>
-      <div className="flex gap-2">
-        <Button
+      <div className="flex gap-2 max-w-full overflow-auto flex-wrap justify-start">
+        {/* <Button
           onClick={() => exportToExcel(data, "Student_Data")}
           className="text-customPrimary px-4 py-2 border-customSecondary"
           variant={"outline"}
         >
           Export to Excel
-        </Button>
+        </Button> */}
         {/* Bulan */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="border-customSecondary">
