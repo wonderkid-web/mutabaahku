@@ -1,4 +1,5 @@
 import { Juz } from "@/types";
+import { Resolution } from "react-to-pdf";
 
 export const initialJuzData: Juz[] = [
   { id: 1, name: "Al-Fatihah 1 - Al-Baqarah 141" },
@@ -157,3 +158,39 @@ const message = encodeURIComponent(
   "Assallamu'alaikum, saya tidak menemukan nama sekolah tempat saya bekerja pada list pendaftaran"
 );
 export const waLink = `https://wa.me/${phoneNumber}?text=${message}`;
+
+
+export  const options = {
+    // default is `save`
+    // default is Resolution.MEDIUM = 3, which should be enough, higher values
+    // increases the image quality but also the size of the PDF, so be careful
+    // using values higher than 10 when having multiple pages generated, it
+    // might cause the page to crash or hang.
+    resolution: Resolution.HIGH,
+    page: {
+      // margin is in MM, default is Margin.NONE = 0
+      // margin: Margin.SMALL,
+      // default is 'A4'
+      // default is 'portrait'
+      orientation: "landscape",
+    },
+    // canvas: {
+    //   // default is 'image/jpeg' for better size performance
+    //   mimeType: "image/png",
+    //   qualityRatio: 1,
+    // },
+    // // Customize any value passed to the jsPDF instance and html2canvas
+    // // function. You probably will not need this and things can break,
+    // // so use with caution.
+    // overrides: {
+    //   // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
+    //   pdf: {
+    //     compress: true,
+    //   },
+    //   // see https://html2canvas.hertzen.com/configuration for more options
+    //   canvas: {
+    //     useCORS: true,
+    //   },
+    // },
+  };
+

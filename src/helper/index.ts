@@ -11,6 +11,9 @@ export const quranFont = localFont({
 export const formatedDate = (date: Date) =>
   format(date, "dd MMMM yyyy, HH:mm", { locale: id });
 
+export const formatedTodayDate = () =>
+  format(new Date(), "dd MMMM yyyy, HH:mm", { locale: id });
+
 export const exportTableToExcel = (
   type: "Muroj'ah" | "Murid" | "Mutqin",
   tableRef: HTMLTableElement

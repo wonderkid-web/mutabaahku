@@ -22,7 +22,7 @@ export const appRouter = router({
         select: {
           id: true,
           status: true,
-          name: true
+          name: true,
         },
       })
     ),
@@ -48,7 +48,6 @@ export const appRouter = router({
         }
       }
     }),
-
   getChildrensById: procedure
     .input(z.object({ id: z.number().optional() }))
     .query(async ({ input: { id } }) => {

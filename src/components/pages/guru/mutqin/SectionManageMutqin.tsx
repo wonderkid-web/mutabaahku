@@ -1,20 +1,16 @@
 "use client";
 
 import LoadingBarSkeleton from "@/components/skeleton/LoadingBarSkeleton";
-import Loader from "@/components/skeleton/LoadingBarSkeleton";
-import { Button } from "@/components/ui/button";
-import exportToExcel from "@/helper";
 import { setStudentData } from "@/helper/zustand";
 import { trpc } from "@/server/client";
 import { initialJuzData } from "@/static";
 import { Juz } from "@/types";
-import { useSession } from "next-auth/react";
+import Link from "next/link";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
 export function SectionManageMutqin() {
   const { student_id } = setStudentData();
-  const session = useSession();
 
   return (
     <div className="overflow-x-auto container px-4 mb-4">
@@ -117,13 +113,19 @@ function TableManageMutqin({ student_id }: { student_id: number }) {
                     : "Belum Selesai"}
                 </span>
               </td>
-              <td className="py-2 px-4 text-center">
+              <td className="py-2 px-4 text-center flex gap-2 justify-center">
                 <button
                   onClick={() => handleUpdate(juz.id)}
                   className="hover:bg-customPrimary bg-customSecondary text-white font-bold py-1 px-2 text-sm rounded"
                 >
                   Update
                 </button>
+                <Link
+                  href={`/teacher/mutqin/${student_id}/${juz.id}/sertification`}
+                  className="hover:bg-customPrimary bg-customSecondary text-white font-bold py-1 px-2 text-sm rounded"
+                >
+                  Sertifikat
+                </Link>
               </td>
             </tr>
           ))}
