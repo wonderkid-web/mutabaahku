@@ -46,7 +46,9 @@ function SertificateComponent({ name, juz }: { name: string; juz: string }) {
             Atas pencapaiannya dalam menghafal {"Al-Qur'an"} sebanyak:
           </p>
 
-          <h3 className="mt-3 text-2xl font-semibold text-green-800">Juz {juz}</h3>
+          <h3 className="mt-3 text-2xl font-semibold text-green-800">
+            Juz {juz}
+          </h3>
 
           <p className="mt-6 text-gray-600 italic">
             Semoga Allah senantiasa memberkahi dan menjadikannya bagian dari

@@ -11,7 +11,6 @@ export default async function SertifikatTemplate({
 
   return (
     <>
-    {student_juz}
       <SertificateComponent name={students?.name || "-"} juz={student_juz} />
     </>
   );
