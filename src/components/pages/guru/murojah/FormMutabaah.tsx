@@ -36,6 +36,8 @@ import * as z from "zod";
 import { Mutabaah } from "@/types";
 import { toast } from "sonner";
 import { trpc } from "@/server/client";
+import { useMurojah } from "@/hooks";
+import { setterGlobalClass } from "@/helper/zustand";
 
 const formSchema = z.object({
   created_at: z.date({
@@ -87,19 +89,17 @@ export function FormMutabaah({
 }: {
   student_id: Mutabaah["student_id"];
 }) {
-  const getMurojah = trpc.getMurojah.useQuery(
-    { student_id },
-    {
-      enabled: !!student_id,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    }
-  );
+  const date = new Date();
+  const { month, year } = setterGlobalClass();
+  const { refetch } = useMurojah({
+    student_id,
+    month: month || date.getMonth(),
+    year: year || date.getFullYear(),
+  });
   const { mutate: addMurojah, isPending } = trpc.addMurojah.useMutation<any>({
     onMutate: () => toast.info("Menambahkan Muroj'ah"),
     onSuccess: () => {
-      getMurojah.refetch();
+      refetch();
       toast.success("Berhasil Menambahkan data baru");
     },
     onError: (e) => {

@@ -15,10 +15,9 @@ import { Student } from "@/types";
 import TableBody from "../../../table/TableBody";
 import { TableColumnsMurid as columns } from "./TableColumnsMurid";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { TableFooter } from "../../../table/TableFooter";
 import TableSearch from "../../../table/TableSearch";
-import TableExport from "@/components/table/parent/TableExport";
 
 export function TableMurid({ data }: { data: Student[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -30,7 +29,6 @@ export function TableMurid({ data }: { data: Student[] }) {
     pageIndex: 0,
   });
 
-  const tableRef = useRef<HTMLTableElement | null>(null);
 
   const table = useReactTable({
     data: data || [],

@@ -1,4 +1,5 @@
-import { setStudentData } from "@/helper/zustand";
+import { setStudentData, setterGlobalClass } from "@/helper/zustand";
+import { useHafalan } from "@/hooks";
 import { trpc } from "@/server/client";
 import { Mutabaah } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
@@ -8,10 +9,17 @@ import { toast } from "sonner";
 
 function DeleteMutabaah({ id }: { id: number }) {
   const { student_id } = setStudentData();
-  const { refetch } = trpc.getHafalan.useQuery(
-    { student_id: student_id! },
-    { enabled: !!student_id }
-  );
+  const { month, year } = setterGlobalClass();
+  // const { refetch } = trpc.getHafalan.useQuery(
+  //   { student_id: student_id! },
+  //   { enabled: !!student_id }
+  // );
+  const date = new Date();
+  const { refetch } = useHafalan({
+    student_id: student_id!,
+    month: month || date.getMonth(),
+    year: year || date.getFullYear(),
+  });
   const deleteMutabaah = trpc.deleteHafalan.useMutation({
     onSuccess: () => {
       refetch();
@@ -30,7 +38,6 @@ function DeleteMutabaah({ id }: { id: number }) {
       className="flex justify-center items-center bg-red-400 px-3 py-1 rounded-sm text-white"
       onClick={() => deleteMutabaah.mutate({ id })}
     >
-
       <Trash color="white" size={14} />
     </button>
   );

@@ -1,21 +1,20 @@
 "use client";
 
 import { FormMutabaah } from "./FormMutabaah";
-import { setStudentData } from "@/helper/zustand";
-import { trpc } from "@/server/client";
+import { setStudentData, setterGlobalClass } from "@/helper/zustand";
 import TableMutabaah from "./table/TableHafalanMutabaah";
 import LoadingBarSkeleton from "@/components/skeleton/LoadingBarSkeleton";
+import { useHafalan } from "@/hooks";
 
 function StudentSection() {
   const { name, student_id } = setStudentData();
-  const { data: hafalan, isLoading } = trpc.getHafalan.useQuery(
-    {
-      student_id: student_id ?? 0,
-    },
-    {
-      enabled: !!student_id,
-    }
-  );
+  const { month, year } = setterGlobalClass();
+  const date = new Date();
+  const { data: hafalan, isLoading } = useHafalan({
+    student_id: student_id ?? 0,
+    month: month || date.getMonth(),
+    year: year || date.getFullYear(),
+  });
 
   if (name)
     return (
@@ -26,7 +25,6 @@ function StudentSection() {
           <div className="container mx-auto p-4">
             {/* @ts-ignore */}
             <TableMutabaah name={name} data={hafalan} />
-            
           </div>
         )}
 

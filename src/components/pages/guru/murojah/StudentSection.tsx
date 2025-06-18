@@ -1,23 +1,21 @@
 "use client";
 
 import { FormMutabaah } from "./FormMutabaah";
-import { setStudentData } from "@/helper/zustand";
+import { setStudentData, setterGlobalClass } from "@/helper/zustand";
 import { trpc } from "@/server/client";
 import TableMutabaah from "./table/TableMurojahMutabaah";
-import Loader from "@/components/skeleton/LoadingBarSkeleton";
 import LoadingBarSkeleton from "@/components/skeleton/LoadingBarSkeleton";
+import { useMurojah } from "@/hooks";
 
 function StudentSection() {
   const { name, student_id } = setStudentData();
-  const { data: murojah, isLoading } = trpc.getMurojah.useQuery(
-    {
-      student_id: student_id ?? 0,
-    },
-    {
-      enabled: !!student_id,
-    }
-  );
-
+  const { month, year } = setterGlobalClass();
+  const date = new Date();
+  const { data: murojah, isLoading } = useMurojah({
+    student_id: student_id ?? 0,
+    month: month || date.getMonth(),
+    year: year || date.getFullYear(),
+  });
   if (name)
     return (
       <>

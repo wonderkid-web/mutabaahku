@@ -8,7 +8,7 @@ import generatePDF from "react-to-pdf";
 function SertificateComponent({ name, juz }: { name: string; juz: string }) {
   const sertiRef = useRef(null);
   return (
-    <>
+    <div className="max-h-screen max-w-screen-xl overflow-auto">
       <div
         ref={sertiRef}
         id="certificate"
@@ -71,13 +71,13 @@ function SertificateComponent({ name, juz }: { name: string; juz: string }) {
       </div>
 
       <button
-        className="mt-4 px-4 py-2 bg-green-600 text-white rounded fixed bottom-4 left-1/2 -translate-x-1/2"
+        className="mt-4 px-6 py-2 w-[1280px] bg-green-600 text-white rounded absolute bottom-8 left-1/2 -translate-x-1/2 bold uppercase"
         // @ts-ignore
         onClick={() => generatePDF(sertiRef, options)}
       >
         DOWNLOAD
       </button>
-    </>
+    </div>
   );
 }
 

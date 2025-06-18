@@ -22,6 +22,26 @@ export const exportTableToExcel = (
   XLSX.writeFileXLSX(wb, `${type}.xlsx`);
 };
 
+export function getMonthName(month: number): string {
+  const months: string[] = [
+    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+  ];
+  
+  // Pastikan bulan valid (1-12)
+  if (month < 1 || month > 12) {
+    throw new Error("Bulan harus antara 1 dan 12");
+  }
+
+  return months[month - 1]; // Indeks array dimulai dari 0, jadi kita kurangi 1 dari bulan
+}
+
+// Contoh penggunaan:
+console.log(getMonthName(1));  // "Januari"
+console.log(getMonthName(6));  // "Juni"
+console.log(getMonthName(12)); // "Desember"
+
+
 const exportToExcel = (data: any, fileName = "data") => {
   //   if (!Array.isArray(data) || data.length === 0) {
   //     console.error("Data tidak valid atau kosong");

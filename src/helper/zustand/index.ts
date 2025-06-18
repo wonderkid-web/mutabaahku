@@ -13,9 +13,19 @@ export const setParentData = create<SetParentData>((set) => ({
   setParentData: ({ id, name }) => set(() => ({ name, id })),
 }));
 
-export const setterGlobalClass = create<SetterGlobaClass>((set) => ({
-  classId: null,
-  teachers: null,
-  setGlobalClass: (classId) => set(() => ({ classId })),
-  setGlobalTeacher: (teachers) => set(() => ({ teachers })),
-}));
+export const setterGlobalClass = create<SetterGlobaClass>((set) => {
+  const now = new Date();
+  const month = now.getMonth() + 1; // 1 - 12
+  const year = now.getFullYear(); // Tahun sekarang
+
+  return {
+    classId: null,
+    teachers: null,
+    month: month as SetterGlobaClass["month"],
+    year: year as SetterGlobaClass["year"],
+    setGlobalClass: (classId) => set(() => ({ classId })),
+    setGlobalTeacher: (teachers) => set(() => ({ teachers })),
+    setGlobalMonth: (month) => set(() => ({ month })),
+    setGlobalYear: (year) => set(() => ({ year })),
+  };
+});

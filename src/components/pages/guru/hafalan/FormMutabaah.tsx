@@ -37,26 +37,26 @@ import { toast } from "sonner";
 import { trpc } from "@/server/client";
 import { daftarSurah } from "@/static";
 import { formSchemaHafalan } from "@/schema";
+import { useHafalan } from "@/hooks";
+import { setterGlobalClass } from "@/helper/zustand";
 
 export function FormMutabaah({
   student_id,
 }: {
   student_id: Mutabaah["student_id"];
 }) {
-  const getHafalan = trpc.getHafalan.useQuery(
-    { student_id },
-    {
-      enabled: !!student_id,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    }
-  );
+  const { month, year } = setterGlobalClass();
+  const date = new Date();
+  const { refetch } = useHafalan({
+    student_id,
+    month: month || date.getMonth(),
+    year: year || date.getFullYear(),
+  });
 
   const { mutate: addHafalan, isPending } = trpc.addHafalan.useMutation<any>({
     onMutate: () => toast.info("Menambahkan Hafalan"),
     onSuccess: () => {
-      getHafalan.refetch();
+      refetch();
       toast.success("Berhasil Menambahkan data baru");
     },
     onError: (e) => {
@@ -236,7 +236,8 @@ export function FormMutabaah({
                     daftarSurah.find(
                       (surah) => surah.namaSurah == form.getValues("surah")
                     )?.banyakAyat
-                  } ayat.
+                  }{" "}
+                  ayat.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

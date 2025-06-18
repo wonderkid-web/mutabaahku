@@ -30,7 +30,7 @@ export default auth(async (req) => {
   );
 
   if (isTeacher && !teacherRoutes) {
-    const newUrl = new URL(teacherPath, req.nextUrl.origin);
+    const newUrl = new URL(`${teacherPath}/hafalan`, req.nextUrl.origin);
     return Response.redirect(newUrl);
   }
 

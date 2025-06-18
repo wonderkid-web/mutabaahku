@@ -94,8 +94,8 @@ const data = {
       icon: BookOpen,
       items: [
         {
-          title: "Sertifikat",
-          url: "/teacher/sertification",
+          title: "Dashboard",
+          url: "/teacher/dashboard",
         },
         {
           title: "Get Started",

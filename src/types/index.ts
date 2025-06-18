@@ -1,4 +1,21 @@
 // Definisikan tipe data untuk informasi murid
+
+type Range<
+  From extends number,
+  To extends number,
+  Acc extends number[] = []
+> = Acc["length"] extends To
+  ? From | Acc[number]
+  : Range<From, To, [...Acc, Acc["length"]]>;
+
+type YearRange<
+  From extends number,
+  To extends number,
+  Acc extends number[] = []
+> = Acc["length"] extends To
+  ? From | Acc[number]
+  : Range<From, To, [...Acc, Acc["length"]]>;
+
 export type Student = {
   id: number;
   name: string;
@@ -15,7 +32,6 @@ type ParamsStudentData = {
   student_id: number;
 };
 
-
 type ParamsParentData = {
   name: string;
   id: string;
@@ -26,7 +42,6 @@ export type SetStudentData = {
   student_id: null | number;
   setStudentData: (newData: ParamsStudentData) => void;
 };
-
 
 export type SetParentData = {
   name: null | string;
@@ -89,7 +104,11 @@ export type Classes = {
 export type SetterGlobaClass = {
   classId: Classes["id"] | null;
   teachers: { classId: User["classId"]; id: User["id"] }[] | null;
+  month: Range<1, 12> | null;
+  year: 2023 | 2024 | 2025 | 2026 | 2027 | null;
   setGlobalClass: (classId: Classes["id"]) => void;
+  setGlobalMonth: (month: SetterGlobaClass["month"]) => void;
+  setGlobalYear: (month: SetterGlobaClass["year"]) => void;
   setGlobalTeacher: (
     teacherData: { classId: User["classId"]; id: User["id"] }[]
   ) => void;

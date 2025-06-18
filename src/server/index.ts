@@ -98,8 +98,6 @@ export const appRouter = router({
       const currentMonth = now.getMonth(); // Bulan sekarang (0-11)
       const currentYear = now.getFullYear(); // Tahun sekarang
 
-      
-
       return await prisma.hafalan.findMany({
         where: {
           student_id,
@@ -111,6 +109,35 @@ export const appRouter = router({
         },
       });
     }),
+  getHafalanByMonth: procedure
+    .input(
+      z.object({
+        student_id: z.number(),
+        month: z.number().min(1).max(12), // 1 = Jan, 12 = Des
+        year: z.number().min(2000).max(2100),
+      })
+    )
+    .query(async ({ input }) => {
+      const { student_id, month, year } = input;
+
+      // Bulan di JS 0-indexed (Januari = 0)
+      const startDate = new Date(year, month - 1, 1);
+      const endDate = new Date(year, month, 1); // bulan berikutnya tanggal 1
+
+      return await prisma.hafalan.findMany({
+        where: {
+          student_id,
+          created_at: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        orderBy: {
+          created_at: "asc",
+        },
+      });
+    }),
+
   addHafalan: procedure.input(formSchema).mutation(
     async ({ input }) =>
       await prisma.hafalan.create({
@@ -141,6 +168,35 @@ export const appRouter = router({
         },
       });
     }),
+  getMurojahByMonth: procedure
+    .input(
+      z.object({
+        student_id: z.number(),
+        month: z.number().min(1).max(12), // 1 = Jan, 12 = Des
+        year: z.number().min(2000).max(2100),
+      })
+    )
+    .query(async ({ input }) => {
+      const { student_id, month, year } = input;
+
+      // Bulan di JS 0-indexed (Januari = 0)
+      const startDate = new Date(year, month - 1, 1);
+      const endDate = new Date(year, month, 1); // bulan berikutnya tanggal 1
+
+      return await prisma.murojah.findMany({
+        where: {
+          student_id,
+          created_at: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        orderBy: {
+          created_at: "asc",
+        },
+      });
+    }),
+
   addMurojah: procedure.input(formSchema).mutation(
     async ({ input }) =>
       await prisma.murojah.create({
@@ -306,6 +362,53 @@ export const appRouter = router({
           },
         })
     ),
+
+  getHafalanTimeline: procedure
+    .input(z.object({ studentId: z.number() }))
+    .query(async ({ input }) => {
+      return await prisma.hafalan.groupBy({
+        by: ["created_at"],
+        where: {
+          student_id: input.studentId,
+        },
+        _count: true,
+        orderBy: {
+          created_at: "asc",
+        },
+      });
+    }),
+  getMurojahStatsByTeacher: procedure
+    .input(z.object({ teacherId: z.string() }))
+    .query(async ({ input }) => {
+      const students = await prisma.student.findMany({
+        where: { teacher_id: input.teacherId },
+        select: {
+          id: true,
+          name: true,
+          murojah: {
+            select: {
+              ayah: true,
+            },
+          },
+        },
+      });
+
+      return students.map((s) => ({
+        studentId: s.id,
+        name: s.name,
+        totalEntry: s.murojah.length,
+        totalAyat: s.murojah.reduce(
+          (sum, m) =>
+            sum +
+            (Array.isArray(m.ayah)
+              ? m.ayah.length
+              : Object.keys(m.ayah!).length),
+          0
+        ),
+        // @ts-ignore
+        ayah: s.murojah.reduce((sum, m) => sum + m.ayah!.endFrom || 0, 0),
+      }));
+    }),
 });
 
 export type AppRouter = typeof appRouter;
