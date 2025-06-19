@@ -32,7 +32,7 @@ export function TableHeaderMurojah({
       <h1 className="text-left text-2xl font-bold  text-customSecondary">
         Table Mutabaah {name} | {getMonthName(month!)}
       </h1>
-      <div className="flex gap-2 max-w-full overflow-auto flex-wrap justify-start">
+      <div className="flex gap-2 px-2 overflow-auto flex-wrap">
         {/* <Button
           onClick={() => exportToExcel(data, "Student_Data")}
           className="text-customPrimary px-4 py-2 border-customSecondary"
@@ -40,10 +40,11 @@ export function TableHeaderMurojah({
         >
           Export to Excel
         </Button> */}
+
         {/* Bulan */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="border-customSecondary">
-            <Button variant="outline" className="ml-auto">
+            <Button variant="outline" className="w-[32%]">
               <MoonIcon className="h-3 mb-1" />
               Bulan <ChevronDownIcon className="ml-2 h-4 w-4" />
             </Button>
@@ -68,7 +69,7 @@ export function TableHeaderMurojah({
         {/* Tahun */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="border-customSecondary">
-            <Button variant="outline" className="ml-auto">
+            <Button variant="outline" className="ml-auto w-[31%]">
               <SunIcon className="ml-2 h-4" />
               Tahun <ChevronDownIcon className="ml-2 h-4 w-4" />
             </Button>
@@ -90,6 +91,7 @@ export function TableHeaderMurojah({
           </DropdownMenuContent>
         </DropdownMenu>
 
+        {/* Kolom */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="border-customSecondary">
             <Button variant="outline" className="ml-auto">
