@@ -113,3 +113,19 @@ export type SetterGlobaClass = {
     teacherData: { classId: User["classId"]; id: User["id"] }[]
   ) => void;
 };
+
+
+export type PropsTeacherDashboard = {
+  className:string,
+  totalStudents: number,
+  students: 
+    {
+      id: number,
+      name: string,
+      totalAyatHafalan: number,
+      totalAyatMurojah: number,
+      totalJuz: number,
+      status: number,
+      lastHafalanDate: Date | null,
+    }[]
+}

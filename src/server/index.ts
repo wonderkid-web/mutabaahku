@@ -409,6 +409,88 @@ export const appRouter = router({
         ayah: s.murojah.reduce((sum, m) => sum + m.ayah!.endFrom || 0, 0),
       }));
     }),
+
+  getTeacherDashboard: procedure.query(async () => {
+    const session = await auth();
+
+    if (!session?.user?.id) throw new Error("Unauthorized");
+
+    const classId = session.user.classId;
+
+    // Ambil data murid berdasarkan teacher_id
+    const students = await prisma.student.findMany({
+      where: {
+        class_id: classId,
+      },
+      include: {
+        hafalan: true,
+        murojah: true,
+        Renamedclass: true,
+      },
+    });
+
+    if (!students.length) {
+      return {
+        className: null,
+        totalStudents: 0,
+        students: [],
+        stats: {
+          totalAyat: 0,
+          totalJuz: 0,
+          totalMurojahAyat: 0,
+        },
+      };
+    }
+
+    const className = students[0].Renamedclass.name;
+
+    const studentStats = students.map((s) => {
+      const totalAyatHafalan = s.hafalan.reduce((sum, h) => {
+        return (
+          sum +
+          (Array.isArray(h.ayah)
+            ? h.ayah.length
+            : Object.keys(h.ayah ?? {}).length)
+        );
+      }, 0);
+
+      const totalAyatMurojah = s.murojah.reduce((sum, m) => {
+        return (
+          sum +
+          (Array.isArray(m.ayah)
+            ? m.ayah.length
+            : Object.keys(m.ayah ?? {}).length)
+        );
+      }, 0);
+
+      return {
+        id: s.id,
+        name: s.name,
+        totalAyatHafalan,
+        totalAyatMurojah,
+        totalJuz: s.total_juz ?? 0,
+        status: s.status,
+        lastHafalanDate:
+          s.hafalan.length > 0
+            ? s.hafalan[s.hafalan.length - 1].created_at
+            : null,
+      };
+    });
+
+    return {
+      className,
+      totalStudents: students.length,
+      students: studentStats,
+      stats: {
+        totalAyat: studentStats.reduce((sum, s) => sum + s.totalAyatHafalan, 0),
+        totalJuz: studentStats.reduce((sum, s) => sum + s.totalJuz, 0),
+        totalMurojahAyat: studentStats.reduce(
+          (sum, s) => sum + s.totalAyatMurojah,
+          0
+        ),
+      },
+    };
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -1,23 +1,15 @@
-import { formatedDate } from "@/helper";
+import HafalanDashboard from "@/components/pages/guru/dashboard/Dashboard";
 import { caller } from "@/server/serverClient";
-import React from "react";
 
-async function page() {
-  const data = await caller.getHafalanTimeline({ studentId: 50 });
-  const teacher = await caller.getMurojahStatsByTeacher({
-    teacherId: "cm63lo6m50000l703xv32rwja",
-  });
+export const dynamic = "force-dynamic"
+
+export default async function Page() {
+  const data = await caller.getTeacherDashboard();
   return (
-    <div>
-      {data.map((d, _) => (
-        <p key={_}>{formatedDate(d.created_at!)}</p>
-      ))}
-
-      <pre>
-        {JSON.stringify(teacher, null, 2)}
-      </pre>
-    </div>
+    <HafalanDashboard
+      className={data.className || "-"}
+      students={data.students || []}
+      totalStudents={data.totalStudents}
+    />
   );
 }
-
-export default page;

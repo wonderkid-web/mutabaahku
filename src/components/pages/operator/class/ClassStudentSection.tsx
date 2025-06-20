@@ -25,7 +25,6 @@ const formStudentSchema = z.object({
 });
 
 function ClassStudentSection() {
-  const { data: s } = trpc.getStudents.useQuery();
   const { classId } = setterGlobalClass();
   const {
     data: students,
@@ -71,7 +70,7 @@ function ClassStudentSection() {
   if (classId)
     return (
       <div className="flex flex-col gap-2 container">
-        <ClassTableStudent isLoading={isLoading} students={students!} />
+        <ClassTableStudent isLoading={isLoading} students={students || []} />
 
         <Form {...form}>
           <form
