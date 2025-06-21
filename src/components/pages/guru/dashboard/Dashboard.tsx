@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { BookOpen, Users, Calendar, TrendingUp } from "lucide-react"
+import { BookOpen, Users, Calendar, TrendingUp, BookCheck } from "lucide-react"
 import { PropsTeacherDashboard } from "@/types"
 import { formatedDate } from "@/helper"
 
@@ -92,7 +92,7 @@ export default function HafalanDashboard({className, totalStudents, students} : 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Juz</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <BookCheck className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalJuz}</div>
@@ -108,8 +108,8 @@ export default function HafalanDashboard({className, totalStudents, students} : 
             <CardDescription>Daftar siswa dan progress hafalan mereka</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
+            <div className="overflow-x-auto max-w-[320px] md:max-w-full">
+              <Table className="min-w-[500px]">
                 <TableHeader>
                   <TableRow>
                     <TableHead>Siswa</TableHead>
@@ -145,7 +145,7 @@ export default function HafalanDashboard({className, totalStudents, students} : 
                         </Badge>
                       </TableCell>
                       <TableCell className="text-center">
-                        <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                        <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
                           {student.totalJuz}
                         </Badge>
                       </TableCell>

@@ -446,21 +446,14 @@ export const appRouter = router({
 
     const studentStats = students.map((s) => {
       const totalAyatHafalan = s.hafalan.reduce((sum, h) => {
-        return (
-          sum +
-          (Array.isArray(h.ayah)
-            ? h.ayah.length
-            : Object.keys(h.ayah ?? {}).length)
-        );
+        const hafalan = h.ayah as { startFrom: number; endFrom: number };
+
+        return sum + (hafalan.endFrom - hafalan.startFrom);
       }, 0);
 
       const totalAyatMurojah = s.murojah.reduce((sum, m) => {
-        return (
-          sum +
-          (Array.isArray(m.ayah)
-            ? m.ayah.length
-            : Object.keys(m.ayah ?? {}).length)
-        );
+        const ayah = m.ayah as { startFrom: number; endFrom: number };
+        return sum + (ayah.endFrom - ayah.startFrom);
       }, 0);
 
       return {
@@ -468,7 +461,7 @@ export const appRouter = router({
         name: s.name,
         totalAyatHafalan,
         totalAyatMurojah,
-        totalJuz: s.total_juz ?? 0,
+        totalJuz: s.status,
         status: s.status,
         lastHafalanDate:
           s.hafalan.length > 0
@@ -483,7 +476,7 @@ export const appRouter = router({
       students: studentStats,
       stats: {
         totalAyat: studentStats.reduce((sum, s) => sum + s.totalAyatHafalan, 0),
-        totalJuz: studentStats.reduce((sum, s) => sum + s.totalJuz, 0),
+        totalJuz: students.reduce((sum, s) => sum + s.status, 0),
         totalMurojahAyat: studentStats.reduce(
           (sum, s) => sum + s.totalAyatMurojah,
           0
